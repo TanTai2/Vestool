@@ -10,17 +10,23 @@ def get_client():
     return create_client(url, key)
 
 def save_items(items):
+    if not items:
+        print("Không có dữ liệu để lưu")
+        return
     client = get_client()
     if not client:
         return
     data = []
-    for i in items:
-        data.append({
-            'app_id': i.get('app_id'),
-            'title': i.get('title'),
-            'icon': i.get('icon'),
-            'description': i.get('description'),
-            'telegram_link': i.get('telegram_link'),
-            'date': datetime.utcnow().isoformat()
-        })
-    client.table('apps').upsert(data).execute()
+    for it in items:
+        if it.get('app_id') and it.get('title'):
+            data.append({
+                'app_id': it['app_id'],
+                'title': it['title'],
+                'icon': it.get('icon', ''),
+                'description': it.get('description', ''),
+                'apk_url': it.get('apk_url', ''),
+                'telegram_link': it.get('telegram_link', ''),
+                'date': datetime.utcnow().isoformat()
+            })
+    if data:
+        return client.table('apps').upsert(data).select('*').execute()
