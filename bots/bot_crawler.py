@@ -79,20 +79,23 @@ def _apkcombo_list(limit=10):
     soup = _get_soup(url)
     apps = []
     if not soup:
-    if not cards:
-        cards = soup.select('a[href^="/vi/"]')
         return apps
     cards = soup.select('div.list-state li a')
+    if not cards:
+        cards = soup.select('a[href^="/vi/"]')
     for a in cards:
         href = a.get('href') or ''
         if not href or '/download/' in href: 
             continue
-        title = a.select_one('div.name').text.strip() if a.select_one('div.name') else a.text.strip()
+        tnode = a.select_one('div.name')
+        title = tnode.text.strip() if tnode else (a.text or '').strip()
         img_tag = a.find('img')
         img = img_tag.get('data-src') or img_tag.get('src') if img_tag else None
         detail = _abs(base, href)
         apps.append({'title': title, 'icon': img, 'detail': detail})
         if len(apps) >= limit: 
+            break
+    return apps
 
 def _apkcombo_direct(detail_url):
     try:
