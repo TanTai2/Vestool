@@ -111,6 +111,16 @@ def _apkcombo_direct(detail_url):
     except:
         return None
 
+def _apkcombo_search_get_detail(title):
+    base = 'https://apkcombo.com'
+    q = urllib.parse.quote(title)
+    url = f'{base}/vi/search/?q={q}'
+    soup = _get_soup(url)
+    if not soup:
+        return None
+    a = soup.select_one('a[href^="/vi/"]')
+    return _abs(base, a.get('href')) if a and a.get('href') else None
+
 def fetch_trending(limit=10, source='apkpure'):
     out = []
     items = []
@@ -133,6 +143,10 @@ def fetch_trending(limit=10, source='apkpure'):
             apk_url = _apkpure_direct(it['detail'])
             if not apk_url:
                 apk_url = _apkcombo_direct(it['detail'])
+                if not apk_url:
+                    det = _apkcombo_search_get_detail(it['title'])
+                    if det:
+                        apk_url = _apkcombo_direct(det)
         out.append({
             'app_id': it['detail'],
             'title': it['title'],
