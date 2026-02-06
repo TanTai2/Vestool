@@ -24,15 +24,23 @@ def _abs(base, href):
 def _get_soup(url):
     # Tạo một phiên làm việc để giữ cookie, giúp vượt qua 403
     session = requests.Session()
-    r = session.get(url, headers=HEADERS, timeout=15)
-    r.raise_for_status()
-    return BeautifulSoup(r.text, 'html.parser')
+    try:
+        r = session.get(url, headers=HEADERS, timeout=15)
+        if r.status_code == 403 and 'apkpure.com' in url:
+            alt_url = url.replace('apkpure.com/', 'apkpure.com/vn/')
+            r = session.get(alt_url, headers=HEADERS, timeout=15)
+        r.raise_for_status()
+        return BeautifulSoup(r.text, 'html.parser')
+    except requests.RequestException:
+        return None
 
 def _apkpure_list(limit=10):
     base = 'https://apkpure.com'
     url = f'{base}/latest-updates'
     soup = _get_soup(url)
     apps = []
+    if not soup:
+        return apps
     # Selector chuẩn hơn cho giao diện mới của APKPure
     cards = soup.select('div.category-template li, div.app-list li')
     for c in cards:
@@ -70,6 +78,8 @@ def _apkcombo_list(limit=10):
     url = f'{base}/vi/latest/'
     soup = _get_soup(url)
     apps = []
+    if not soup:
+        return apps
     cards = soup.select('div.list-state li a')
     for a in cards:
         href = a.get('href') or ''
@@ -100,9 +110,26 @@ def _apkcombo_direct(detail_url):
 
 def fetch_trending(limit=10, source='apkpure'):
     out = []
-    items = _apkcombo_list(limit=limit) if source == 'apkcombo' else _apkpure_list(limit=limit)
+    items = []
+    try:
+        items = _apkcombo_list(limit=limit) if source == 'apkcombo' else _apkpure_list(limit=limit)
+    except Exception:
+        items = []
+    if not items and source == 'apkpure':
+        try:
+            items = _apkcombo_list(limit=limit)
+        except Exception:
+            items = []
     for it in items:
-        apk_url = _apkcombo_direct(it['detail']) if source == 'apkcombo' else _apkpure_direct(it['detail'])
+        apk_url = None
+        if source == 'apkcombo':
+            apk_url = _apkcombo_direct(it['detail'])
+            if not apk_url:
+                apk_url = _apkpure_direct(it['detail'])
+        else:
+            apk_url = _apkpure_direct(it['detail'])
+            if not apk_url:
+                apk_url = _apkcombo_direct(it['detail'])
         out.append({
             'app_id': it['detail'],
             'title': it['title'],
