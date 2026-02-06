@@ -79,6 +79,8 @@ def _apkcombo_list(limit=10):
     soup = _get_soup(url)
     apps = []
     if not soup:
+    if not cards:
+        cards = soup.select('a[href^="/vi/"]')
         return apps
     cards = soup.select('div.list-state li a')
     for a in cards:
@@ -91,8 +93,6 @@ def _apkcombo_list(limit=10):
         detail = _abs(base, href)
         apps.append({'title': title, 'icon': img, 'detail': detail})
         if len(apps) >= limit: 
-            break
-    return apps
 
 def _apkcombo_direct(detail_url):
     try:

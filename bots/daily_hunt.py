@@ -7,6 +7,8 @@ from supabase_store import save_items
 def main():
     items = fetch_trending(limit=10, source='apkpure')
     alt = fetch_trending(limit=10, source='apkcombo')
+    print(f'APKPure lấy được: {len(items)} app')
+    print(f'APKCombo lấy được: {len(alt)} app')
     by_title = {}
     for x in alt:
         key = (x.get('title') or '').strip().lower()
@@ -35,9 +37,13 @@ def main():
                 link = None
         i['telegram_link'] = link
     save_items(items)
+    found = len(items)
+    with_apk = len([x for x in items if x.get('apk_url')])
     success = len([x for x in items if x.get('telegram_link')])
-    fail = len(items) - success
-    msg = f'Đại ca ơi! Đã quét xong 10 app. Thành công: {success} app, Thất bại: {fail} app. Link web: localhost:3000'
+    fail_upload = len([x for x in items if x.get('apk_url') and not x.get('telegram_link')])
+    missing_apk = len([x for x in items if not x.get('apk_url')])
+    print(f'Tổng: {found}, có APK: {with_apk}, upload thành công: {success}, thiếu APK: {missing_apk}, lỗi upload: {fail_upload}')
+    msg = f'Đại ca ơi! Đã quét xong {found} app. Thành công: {success} app, Thất bại: {fail_upload} app, Thiếu APK: {missing_apk}. Link web: localhost:3000'
     send_text(msg)
 
 if __name__ == '__main__':
