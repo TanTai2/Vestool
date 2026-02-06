@@ -36,28 +36,33 @@ def _get_soup(url):
 
 def _apkpure_list(limit=10):
     base = 'https://apkpure.com'
-    url = f'{base}/latest-updates'
-    soup = _get_soup(url)
-    apps = []
-    if not soup:
-        return apps
-    # Selector chuẩn hơn cho giao diện mới của APKPure
-    cards = soup.select('div.category-template li, div.app-list li')
-    for c in cards:
-        a = c.find('a')
-        if not a: 
+    paths = ['/latest-updates', '/vn/latest-updates']
+    for path in paths:
+        soup = _get_soup(f'{base}{path}')
+        apps = []
+        if not soup:
             continue
-        href = a.get('href') or ''
-        if not href or '/download' in href: 
-            continue
-        title = (c.find('dt') or a).text.strip()
-        img_tag = c.find('img')
-        img = img_tag.get('data-src') or img_tag.get('src') if img_tag else None
-        detail = _abs(base, href)
-        apps.append({'title': title, 'icon': img, 'detail': detail})
-        if len(apps) >= limit: 
-            break
-    return apps
+        cards = soup.select('ul.pdt-list-ul li, div.app-list li')
+        if not cards:
+            cards = soup.select('a.da[href*="/"]')
+        for c in cards:
+            a = c if getattr(c, 'name', None) == 'a' else c.find('a')
+            if not a:
+                continue
+            href = a.get('href') or ''
+            if not href or '/download' in href or href == '/':
+                continue
+            title_tag = c.find('dt') or c.find('p') or a
+            title = (title_tag.text or '').strip() if title_tag else 'Unknown App'
+            img_tag = c.find('img')
+            img = (img_tag.get('data-src') or img_tag.get('src')) if img_tag else None
+            detail = _abs(base, href)
+            apps.append({'title': title, 'icon': img, 'detail': detail})
+            if len(apps) >= limit:
+                break
+        if apps:
+            return apps
+    return []
 
 def _apkpure_direct(detail_url):
     try:
