@@ -1,0 +1,1 @@
+docker run -it -v /d/dev/python/cruzrdeploy/api:/app  --entrypoint=sh -p 8006:5000 -e ES_HOST=10.10.1.7 registry.netlyt.io:5000/netlyt/cruzrdeploy:latest

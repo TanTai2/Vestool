@@ -1,0 +1,69 @@
+version: 0.4
+
+#The environment vars you'll use
+env:
+  NAME: cruzrdeploy
+  SERVICE_NAME: api
+  IMAGE: netlyt/cruzrdeploy
+  DIR: /var/netlyt/environments/$IMAGE
+  REGISTRY: registry.netlyt.io:5000
+  HOST_PORT: 8006
+  USER: vasko
+
+networks:
+  # The staging directory
+  staging:
+    hosts:
+      - ibm.netlyt.io
+
+commands:
+  #These commands are just helpers, don't modify them
+  prepare:
+    desc: Build the docker images locally
+    local: docker-compose build
+
+  post-upload:
+    desc: Fixes file permission and ownership after uploading
+    run: sudo chmod 775 -R $DIR; sudo chown $USER:netlyt -R $DIR
+
+  push-local:
+    desc: Pushes the service
+    local: docker-compose push
+
+  migrate:
+    desc: Creates migrations if necessary
+    local: cd api; python migrations.py
+
+  pre-build:
+    desc: Initialize directory
+    run: mkdir -p $DIR; mkdir -p $DIR/api; mkdir -p $DIR/webui
+
+  upload:
+    desc: Build Docker image from current directory, push to Docker Hub
+    # local: sup $SUP_ENV -f ./builder/Supfile $SUP_NETWORK build
+    upload:
+      - src: docker-compose.yml
+        dst: $DIR
+      - src: conf
+        dst: $DIR
+#      - src: api/topics_storage
+#        dst: $DIR
+
+
+
+targets:
+  #The deployment target command, it runs multiple commands one after another, ensuring the previous one returned 0
+  deploy:
+    - migrate
+    - pre-build
+    - prepare
+    - push-local
+    - pre-build
+    - post-upload
+    - upload
+    - post-upload
+    - pull
+    - stop-rm-run
+    - ps
+    - logs
+    - health

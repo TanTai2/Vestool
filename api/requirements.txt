@@ -1,0 +1,10 @@
+flask
+flask-socketio
+flask-cors
+pyaxmlparser
+peewee
+maxminddb-geolite2
+eventlet
+gevent
+gevent-websocket
+peewee-migrate==1.1.6

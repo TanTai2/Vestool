@@ -1,0 +1,9 @@
+{
+  "short_name": "VesTool",
+  "name": "VesTool APK",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#ff0000",
+  "background_color": "#f4f4f4"
+}
