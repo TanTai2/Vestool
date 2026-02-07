@@ -19,8 +19,8 @@ def main():
     ids_raw = os.environ.get('APP_IDS', '')
     ids = [x.strip() for x in ids_raw.split(',') if x.strip()]
     print(f'App IDs trước khi cào: {ids}')
-    items = fetch_trending(limit=10, source='gplay')
-    alt = fetch_trending(limit=10, source='apkpure')
+    items = fetch_trending(limit=20, source='gplay')
+    alt = fetch_trending(limit=20, source='apkpure')
     print(f'GPlay lấy được: {len(items)} app')
     print(f'APKPure lấy được: {len(alt)} app')
     by_title = {}

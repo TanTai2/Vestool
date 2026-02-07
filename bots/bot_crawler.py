@@ -6,10 +6,13 @@ import requests
 from bs4 import BeautifulSoup
 import traceback
 try:
-    from google_play_scraper import app as gp_app, search as gp_search
+    from google_play_scraper import app as gp_app, search as gp_search, list as gp_list, collections, categories
 except Exception:
     gp_app = None
     gp_search = None
+    gp_list = None
+    collections = None
+    categories = None
 
 # Bộ mặt nạ đầy đủ để APKPure tin đây là người dùng thật
 HEADERS = {
@@ -228,10 +231,12 @@ def _gplay_list(limit=10):
             except Exception as e:
                 print(f'GPlay app error {app_id}: {e}')
         return items
-    if gp_search:
+    # Auto trending without manual IDs
+    if gp_list and collections and categories:
         try:
-            results = gp_search('Facebook', lang='vi', country='vn')
-            for r in results[:limit]:
+            print('GPlay list: TOP_FREE APPLICATION')
+            res = gp_list(collections.TOP_FREE, categories.APPLICATION, lang='vi', country='vn', num=limit)
+            for r in res:
                 app_id = r.get('appId')
                 if not app_id:
                     continue
@@ -240,11 +245,49 @@ def _gplay_list(limit=10):
                     'icon': r.get('icon') or '',
                     'detail': app_id
                 })
+            if len(items) < limit:
+                need = limit - len(items)
+                print('GPlay list: TOP_FREE GAME')
+                res2 = gp_list(collections.TOP_FREE, categories.GAME, lang='vi', country='vn', num=need)
+                for r in res2:
+                    app_id = r.get('appId')
+                    if not app_id:
+                        continue
+                    items.append({
+                        'title': r.get('title') or app_id,
+                        'icon': r.get('icon') or '',
+                        'detail': app_id
+                    })
         except Exception as e:
-            print(f'GPlay search error: {e}')
+            print(f'GPlay list error: {e}')
+    # Fallback search queries to fill to limit
+    if len(items) < limit and gp_search:
+        queries = ['Facebook', 'TikTok', 'Instagram', 'YouTube', 'Zalo', 'Shopee', 'Lazada', 'Messenger', 'PUBG Mobile', 'Lien Quan']
+        for q in queries:
+            if len(items) >= limit:
+                break
+            try:
+                remain = limit - len(items)
+                results = gp_search(q, lang='vi', country='vn')
+                for r in results:
+                    app_id = r.get('appId')
+                    if not app_id:
+                        continue
+                    # avoid duplicates
+                    if any(x['detail'] == app_id for x in items):
+                        continue
+                    items.append({
+                        'title': r.get('title') or app_id,
+                        'icon': r.get('icon') or '',
+                        'detail': app_id
+                    })
+                    if len(items) >= limit:
+                        break
+            except Exception as e:
+                print(f'GPlay search fallback error for "{q}": {e}')
     return items
 
-def fetch_trending(limit=10, source='gplay'):
+def fetch_trending(limit=20, source='gplay'):
     out = []
     items = []
     try:
