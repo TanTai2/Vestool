@@ -3,6 +3,10 @@ import json
 from bot_crawler import fetch_trending, get_apps
 from telegram_storage import download_and_upload, send_text, check_secrets
 from supabase_store import save_items, check_connection
+try:
+    from google_play_scraper import app as gp_app
+except Exception:
+    gp_app = None
 
 def main():
     print('Env check:')
@@ -12,10 +16,13 @@ def main():
     print(f' SUPABASE_KEY present: {bool(os.environ.get("SUPABASE_KEY"))}')
     check_secrets()
     check_connection()
-    items = fetch_trending(limit=10, source='apkpure')
-    alt = fetch_trending(limit=10, source='apkcombo')
-    print(f'APKPure lấy được: {len(items)} app')
-    print(f'APKCombo lấy được: {len(alt)} app')
+    ids_raw = os.environ.get('APP_IDS', '')
+    ids = [x.strip() for x in ids_raw.split(',') if x.strip()]
+    print(f'App IDs trước khi cào: {ids}')
+    items = fetch_trending(limit=10, source='gplay')
+    alt = fetch_trending(limit=10, source='apkpure')
+    print(f'GPlay lấy được: {len(items)} app')
+    print(f'APKPure lấy được: {len(alt)} app')
     by_title = {}
     for x in alt:
         key = (x.get('title') or '').strip().lower()
@@ -43,6 +50,20 @@ def main():
             except Exception:
                 link = None
         i['telegram_link'] = link
+    if not items and gp_app:
+        try:
+            gp = gp_app('com.facebook.katana', lang='vi', country='vn')
+            fb_item = {
+                'app_id': 'com.facebook.katana',
+                'title': gp.get('title') or 'Facebook',
+                'icon': gp.get('icon') or '',
+                'description': gp.get('description') or '',
+                'apk_url': ''
+            }
+            save_items([fb_item])
+            print('>>> Đã thử lưu com.facebook.katana lên Supabase (test kết nối)')
+        except Exception as e:
+            print(f'Google Play Scraper lỗi: {e}')
     save_items(items)
     found = len(items)
     with_apk = len([x for x in items if x.get('apk_url')])
