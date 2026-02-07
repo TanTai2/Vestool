@@ -4,6 +4,7 @@ import time
 import urllib.parse
 import requests
 from bs4 import BeautifulSoup
+import traceback
 
 # Bộ mặt nạ đầy đủ để APKPure tin đây là người dùng thật
 HEADERS = {
@@ -69,6 +70,7 @@ def _apkpure_list(limit=10):
             img_tag = c.find('img')
             img = (img_tag.get('data-src') or img_tag.get('src')) if img_tag else None
             detail = _abs(base, href)
+            print(f'app_detail: {detail}')
             apps.append({'title': title, 'icon': img, 'detail': detail})
             if len(apps) >= limit:
                 break
@@ -87,7 +89,9 @@ def _apkpure_direct(detail_url):
         s2 = BeautifulSoup(r.text, 'html.parser')
         cand = s2.select_one('a#download_link') or s2.select_one('a[href$=".apk"]')
         return _abs(dl_url, cand.get('href')) if cand else None
-    except:
+    except Exception as e:
+        print(f'Crawler _apkpure_direct error: {e}')
+        print(traceback.format_exc())
         return None
 
 def _apkcombo_list(limit=10):
@@ -109,6 +113,7 @@ def _apkcombo_list(limit=10):
         img_tag = a.find('img')
         img = img_tag.get('data-src') or img_tag.get('src') if img_tag else None
         detail = _abs(base, href)
+        print(f'app_detail: {detail}')
         apps.append({'title': title, 'icon': img, 'detail': detail})
         if len(apps) >= limit: 
             break
@@ -125,7 +130,9 @@ def _apkcombo_direct(detail_url):
         s2 = BeautifulSoup(r.text, 'html.parser')
         cand = s2.select_one('a[href$=".apk"]')
         return _abs(dl_page, cand.get('href')) if cand else None
-    except:
+    except Exception as e:
+        print(f'Crawler _apkcombo_direct error: {e}')
+        print(traceback.format_exc())
         return None
 
 def _apkcombo_search_get_detail(title):
@@ -143,12 +150,16 @@ def fetch_trending(limit=10, source='apkpure'):
     items = []
     try:
         items = _apkcombo_list(limit=limit) if source == 'apkcombo' else _apkpure_list(limit=limit)
-    except Exception:
+    except Exception as e:
+        print(f'Crawler fetch_trending list error: {e}')
+        print(traceback.format_exc())
         items = []
     if not items and source == 'apkpure':
         try:
             items = _apkcombo_list(limit=limit)
-        except Exception:
+        except Exception as e:
+            print(f'Crawler fetch_trending fallback error: {e}')
+            print(traceback.format_exc())
             items = []
     for it in items:
         apk_url = None
@@ -164,6 +175,7 @@ def fetch_trending(limit=10, source='apkpure'):
                     det = _apkcombo_search_get_detail(it['title'])
                     if det:
                         apk_url = _apkcombo_direct(det)
+        print(f'app_detail: {it["detail"]}')
         out.append({
             'app_id': it['detail'],
             'title': it['title'],
