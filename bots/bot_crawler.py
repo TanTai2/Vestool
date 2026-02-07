@@ -160,10 +160,13 @@ def _uptodown_search_get_detail(app_id=None, title=None):
     if not q:
         return None
     url = f'{base}/android/search?q={q}'
+    print(f'Uptodown search URL: {url}')
     soup = _get_soup(url)
     if not soup:
+        print('Uptodown search: soup is None')
         return None
     candidates = soup.select('a[href*="/android"]')
+    print(f'Uptodown search: candidates={len(candidates)}')
     target = None
     tnorm = (title or '').lower().strip()
     for a in candidates:
@@ -173,18 +176,25 @@ def _uptodown_search_get_detail(app_id=None, title=None):
             continue
         if tnorm and tnorm in text:
             target = a
+            print(f'Uptodown search: matched title text={text} href={href}')
             break
     if not target and candidates:
         target = candidates[0]
-    return _abs(base, target.get('href')) if target and target.get('href') else None
+        print(f'Uptodown search: fallback first candidate href={target.get("href")}')
+    detail = _abs(base, target.get('href')) if target and target.get('href') else None
+    print(f'Uptodown search: detail={detail}')
+    return detail
 
 def _uptodown_direct(detail_url):
     try:
+        print(f'Uptodown direct: detail_url={detail_url}')
         soup = _get_soup(detail_url)
         if not soup:
+            print('Uptodown direct: soup is None')
             return None
         a = soup.select_one('a[href*="/android/download"]')
         if not a:
+            print('Uptodown direct: download anchor not found')
             return None
         link = _abs(detail_url, a.get('href'))
         try:
@@ -192,6 +202,8 @@ def _uptodown_direct(detail_url):
             if resp.status_code == 404:
                 print(f'Uptodown 404: {link}')
                 return None
+            else:
+                print(f'Uptodown direct: probe status={resp.status_code} url={link}')
         except Exception:
             pass
         return link
@@ -271,10 +283,15 @@ def fetch_trending(limit=10, source='gplay'):
             det = _uptodown_search_get_detail(app_id=it['detail'], title=it['title'])
             if det:
                 apk_url = _uptodown_direct(det)
+            else:
+                print(f'Uptodown: no detail found for app_id={it["detail"]} title={it["title"]}')
             if not apk_url:
                 det2 = _apkcombo_search_get_detail(it['title'])
                 if det2:
+                    print(f'APKCombo fallback: detail={det2}')
                     apk_url = _apkcombo_direct(det2)
+                else:
+                    print(f'APKCombo: no detail for title={it["title"]}')
         print(f'app_detail: {it["detail"]}')
         out.append({
             'app_id': it['detail'],
