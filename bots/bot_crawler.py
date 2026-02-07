@@ -348,6 +348,16 @@ def _gplay_list(limit=10):
             except Exception as e:
                 print(f'GPlay app error {app_id}: {e}')
         return items
+    # Nếu thiếu thư viện google_play_scraper, vẫn dựng danh sách từ APP_IDS để không bị rỗng
+    if ids and not gp_app:
+        print('GPlay: google_play_scraper không khả dụng, dùng APP_IDS để tạo danh sách tối thiểu')
+        for app_id in ids[:limit]:
+            items.append({
+                'title': app_id,
+                'icon': '',
+                'detail': app_id
+            })
+        return items
     # Auto trending without manual IDs
     if gp_list and collections and categories:
         try:
