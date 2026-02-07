@@ -24,9 +24,9 @@ def main():
         os.environ['APP_IDS'] = ','.join(default_ids)
         print(f'APP_IDS rỗng, dùng mặc định: {default_ids}')
     items = fetch_trending(limit=20, source='gplay')
-    alt = fetch_trending(limit=20, source='apkpure')
+    alt = fetch_trending(limit=20, source='aptoide')
     print(f'GPlay lấy được: {len(items)} app')
-    print(f'APKPure lấy được: {len(alt)} app')
+    print(f'Aptoide lấy được: {len(alt)} app')
     by_title = {}
     for x in alt:
         key = (x.get('title') or '').strip().lower()
@@ -47,7 +47,7 @@ def main():
                 i['icon'] = info.get('icon') or i.get('icon') or ''
                 i['description'] = info.get('description') or i.get('description') or ''
             except Exception as e:
-                print(f'GPlay enrich error {i.get(\"app_id\")}: {e}')
+                print(f"GPlay enrich error {i.get('app_id')}: {e}")
         link = None
         apk_url = i.get('apk_url')
         if not apk_url:

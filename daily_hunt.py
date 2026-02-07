@@ -28,9 +28,9 @@ def main():
     items = fetch_trending(limit=10, source='gplay')
     print(f'Nhận từ GPlay: {len(items)} item')
     print(json.dumps(items[:3], ensure_ascii=False, indent=2))
-    print('>>> Cào từ APKPure (fallback)...')
-    alt = fetch_trending(limit=10, source='apkpure')
-    print(f'Nhận từ APKPure: {len(alt)} item')
+    print('>>> Cào từ Aptoide (fallback)...')
+    alt = fetch_trending(limit=10, source='aptoide')
+    print(f'Nhận từ Aptoide: {len(alt)} item')
     by_title = {}
     for x in alt:
         key = (x.get('title') or '').strip().lower()

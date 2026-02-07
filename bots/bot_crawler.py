@@ -278,6 +278,60 @@ def _uptodown_direct(detail_url):
         print(traceback.format_exc())
         return None
 
+def _aptoide_search_get_detail(app_id=None, title=None):
+    base = 'https://en.aptoide.com'
+    q = urllib.parse.quote((app_id or title or '').strip())
+    if not q:
+        return None
+    url = f'{base}/search?query={q}'
+    print(f'Aptoide search URL: {url}')
+    soup = _get_soup(url)
+    if not soup:
+        print('Aptoide search: soup is None')
+        return None
+    candidates = soup.select('a[href*="/app"]')
+    print(f'Aptoide search: candidates={len(candidates)}')
+    target = None
+    tnorm = (title or '').lower().strip()
+    for a in candidates:
+        href = a.get('href') or ''
+        text = (a.text or '').lower().strip()
+        if '/download' in href:
+            continue
+        if tnorm and tnorm in text:
+            target = a
+            print(f'Aptoide search: matched title text={text} href={href}')
+            break
+    if not target and candidates:
+        target = candidates[0]
+        print(f"Aptoide search: fallback first candidate href={target.get('href')}")
+    detail = _abs(base, target.get('href')) if target and target.get('href') else None
+    print(f'Aptoide search: detail={detail}')
+    return detail
+
+def _aptoide_direct(detail_url):
+    try:
+        print(f'Aptoide direct: detail_url={detail_url}')
+        soup = _get_soup(detail_url)
+        if not soup:
+            print('Aptoide direct: soup is None')
+            return None
+        a = soup.select_one('a[href*=\"/download\"]')
+        if not a:
+            print('Aptoide direct: download anchor not found')
+            return None
+        link = _abs(detail_url, a.get('href'))
+        try:
+            resp = requests.get(link, timeout=15, allow_redirects=True)
+            print(f'Aptoide direct: probe status={resp.status_code} url={link}')
+        except Exception:
+            pass
+        return link
+    except Exception as e:
+        print(f'Crawler _aptoide_direct error: {e}')
+        print(traceback.format_exc())
+        return None
+
 def _gplay_list(limit=10):
     items = []
     ids_raw = os.environ.get('APP_IDS', '')
@@ -354,43 +408,36 @@ def fetch_trending(limit=20, source='gplay'):
     out = []
     items = []
     try:
-        if source == 'apkcombo':
-            items = _apkcombo_list(limit=limit)
-        elif source == 'apkpure':
-            items = _apkpure_list(limit=limit)
+        if source in ('gplay', 'aptoide'):
+            items = _gplay_list(limit=limit)
         else:
             items = _gplay_list(limit=limit)
     except Exception as e:
         print(f'Crawler fetch_trending list error: {e}')
         print(traceback.format_exc())
         items = []
-    if not items and source != 'apkcombo':
-        try:
-            items = _apkcombo_list(limit=limit)
-        except Exception as e:
-            print(f'Crawler fetch_trending fallback error: {e}')
-            print(traceback.format_exc())
-            items = []
     for it in items:
         apk_url = None
-        if source == 'apkcombo':
-            apk_url = _apkcombo_direct(it['detail'])
+        if source == 'aptoide':
+            det = _aptoide_search_get_detail(app_id=it['detail'], title=it['title'])
+            if det:
+                apk_url = _aptoide_direct(det)
+            else:
+                print(f'Aptoide: no detail found for app_id={it["detail"]} title={it["title"]}')
             if not apk_url:
-                apk_url = _apkpure_direct(it['detail'])
-        elif source == 'apkpure':
-            apk_url = _apkpure_direct(it['detail'])
-            if not apk_url:
-                apk_url = _apkcombo_direct(it['detail'])
-                if not apk_url:
-                    det = _apkcombo_search_get_detail(it['title'])
-                    if det:
-                        apk_url = _apkcombo_direct(det)
+                det_u = _uptodown_search_get_detail(app_id=it['detail'], title=it['title'])
+                if det_u:
+                    apk_url = _uptodown_direct(det_u)
         else:
             det = _uptodown_search_get_detail(app_id=it['detail'], title=it['title'])
             if det:
                 apk_url = _uptodown_direct(det)
             else:
                 print(f'Uptodown: no detail found for app_id={it["detail"]} title={it["title"]}')
+            if not apk_url:
+                det_a = _aptoide_search_get_detail(app_id=it['detail'], title=it['title'])
+                if det_a:
+                    apk_url = _aptoide_direct(det_a)
             if not apk_url:
                 det2 = _apkmirror_search_get_detail(it['title'])
                 if det2:
@@ -408,5 +455,5 @@ def fetch_trending(limit=20, source='gplay'):
         })
     return out
 
-def get_apps(limit=10, source='apkpure'):
+def get_apps(limit=10, source='gplay'):
     return fetch_trending(limit=limit, source=source)
