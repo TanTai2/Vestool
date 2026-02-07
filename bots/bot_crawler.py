@@ -5,6 +5,11 @@ import urllib.parse
 import requests
 from bs4 import BeautifulSoup
 import traceback
+try:
+    from google_play_scraper import app as gp_app, search as gp_search
+except Exception:
+    gp_app = None
+    gp_search = None
 
 # Bộ mặt nạ đầy đủ để APKPure tin đây là người dùng thật
 HEADERS = {
@@ -27,6 +32,10 @@ def _abs(base, href):
 def _get_soup(url):
     # Tạo một phiên làm việc để giữ cookie, giúp vượt qua 403
     session = requests.Session()
+    try:
+        session.headers.update(HEADERS)
+    except Exception:
+        pass
     tries = int(os.environ.get('VESTOOL_TRIES', '3'))
     backoff = float(os.environ.get('VESTOOL_BACKOFF', '1.5'))
     err = None
@@ -145,16 +154,50 @@ def _apkcombo_search_get_detail(title):
     a = soup.select_one('a[href^="/vi/"]')
     return _abs(base, a.get('href')) if a and a.get('href') else None
 
-def fetch_trending(limit=10, source='apkpure'):
+def _gplay_list(limit=10):
+    items = []
+    ids_raw = os.environ.get('APP_IDS', '')
+    ids = [x.strip() for x in ids_raw.split(',') if x.strip()]
+    if gp_app and ids:
+        for app_id in ids[:limit]:
+            try:
+                info = gp_app(app_id, lang='vi', country='vn')
+                items.append({
+                    'title': info.get('title') or app_id,
+                    'icon': info.get('icon') or '',
+                    'detail': app_id
+                })
+            except Exception as e:
+                print(f'GPlay app error {app_id}: {e}')
+        return items
+    if gp_search:
+        try:
+            results = gp_search('Facebook', lang='vi', country='vn')
+            for r in results[:limit]:
+                items.append({
+                    'title': r.get('title') or r.get('appId') or '',
+                    'icon': r.get('icon') or '',
+                    'detail': r.get('appId') or ''
+                })
+        except Exception as e:
+            print(f'GPlay search error: {e}')
+    return items
+
+def fetch_trending(limit=10, source='gplay'):
     out = []
     items = []
     try:
-        items = _apkcombo_list(limit=limit) if source == 'apkcombo' else _apkpure_list(limit=limit)
+        if source == 'apkcombo':
+            items = _apkcombo_list(limit=limit)
+        elif source == 'apkpure':
+            items = _apkpure_list(limit=limit)
+        else:
+            items = _gplay_list(limit=limit)
     except Exception as e:
         print(f'Crawler fetch_trending list error: {e}')
         print(traceback.format_exc())
         items = []
-    if not items and source == 'apkpure':
+    if not items and source != 'apkcombo':
         try:
             items = _apkcombo_list(limit=limit)
         except Exception as e:
@@ -167,7 +210,7 @@ def fetch_trending(limit=10, source='apkpure'):
             apk_url = _apkcombo_direct(it['detail'])
             if not apk_url:
                 apk_url = _apkpure_direct(it['detail'])
-        else:
+        elif source == 'apkpure':
             apk_url = _apkpure_direct(it['detail'])
             if not apk_url:
                 apk_url = _apkcombo_direct(it['detail'])

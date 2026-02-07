@@ -1,7 +1,6 @@
 import os
 from datetime import datetime
 from supabase import create_client
-from supabase.lib.client_options import ClientOptions
 
 def get_client():
     url = os.environ.get('SUPABASE_URL')
@@ -9,7 +8,7 @@ def get_client():
     if not url or not key:
         return None
     try:
-        return create_client(url, key, options=ClientOptions())
+        return create_client(url, key)
     except Exception as e:
         print(f'Supabase client init error: {e}')
         return None
