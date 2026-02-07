@@ -171,6 +171,55 @@ def _apkcombo_search_get_detail(title):
     a = soup.select_one('a[href^="/vi/"]')
     return _abs(base, a.get('href')) if a and a.get('href') else None
 
+def _apkmirror_search_get_detail(title):
+    base = 'https://www.apkmirror.com'
+    q = urllib.parse.quote((title or '').strip())
+    if not q:
+        return None
+    url = f'{base}/?s={q}'
+    print(f'APKMirror search URL: {url}')
+    soup = _get_soup(url)
+    if not soup:
+        print('APKMirror search: soup is None')
+        return None
+    candidates = soup.select('a[href*="/apk/"]')
+    print(f'APKMirror search: candidates={len(candidates)}')
+    target = None
+    for a in candidates:
+        href = a.get('href') or ''
+        if '/apk/' in href:
+            target = a
+            break
+    detail = _abs(base, target.get('href')) if target and target.get('href') else None
+    print(f'APKMirror search: detail={detail}')
+    return detail
+
+def _apkmirror_direct(detail_url):
+    try:
+        print(f'APKMirror direct: detail_url={detail_url}')
+        soup = _get_soup(detail_url)
+        if not soup:
+            print('APKMirror direct: soup is None')
+            return None
+        a = soup.select_one('a[href*="/download/"]')
+        if not a:
+            print('APKMirror direct: download page anchor not found')
+            return None
+        dl_page = _abs(detail_url, a.get('href'))
+        print(f'APKMirror direct: dl_page={dl_page}')
+        r = requests.get(dl_page, headers=HEADERS, timeout=30)
+        s2 = BeautifulSoup(r.text, 'html.parser')
+        cand = s2.select_one('a[href$=\".apk\"]') or s2.select_one('a#downloadButton[href]')
+        if cand:
+            final = _abs(dl_page, cand.get('href'))
+            print(f'APKMirror direct: final={final}')
+            return final
+        print('APKMirror direct: no final .apk')
+        return None
+    except Exception as e:
+        print(f'Crawler _apkmirror_direct error: {e}')
+        print(traceback.format_exc())
+        return None
 def _uptodown_search_get_detail(app_id=None, title=None):
     base = 'https://en.uptodown.com'
     q = urllib.parse.quote((app_id or title or '').strip())
@@ -343,12 +392,12 @@ def fetch_trending(limit=20, source='gplay'):
             else:
                 print(f'Uptodown: no detail found for app_id={it["detail"]} title={it["title"]}')
             if not apk_url:
-                det2 = _apkcombo_search_get_detail(it['title'])
+                det2 = _apkmirror_search_get_detail(it['title'])
                 if det2:
-                    print(f'APKCombo fallback: detail={det2}')
-                    apk_url = _apkcombo_direct(det2)
+                    print(f'APKMirror fallback: detail={det2}')
+                    apk_url = _apkmirror_direct(det2)
                 else:
-                    print(f'APKCombo: no detail for title={it["title"]}')
+                    print(f'APKMirror: no detail for title={it["title"]}')
         print(f'app_detail: {it["detail"]}')
         out.append({
             'app_id': it['detail'],

@@ -2,3 +2,4 @@ google-play-scraper
 requests
 supabase
 beautifulsoup4
+cloudscraper
