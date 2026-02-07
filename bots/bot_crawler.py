@@ -1,4 +1,6 @@
+import os
 import re
+import time
 import urllib.parse
 import requests
 from bs4 import BeautifulSoup
@@ -24,15 +26,25 @@ def _abs(base, href):
 def _get_soup(url):
     # Tạo một phiên làm việc để giữ cookie, giúp vượt qua 403
     session = requests.Session()
-    try:
-        r = session.get(url, headers=HEADERS, timeout=15)
-        if r.status_code == 403 and 'apkpure.com' in url:
-            alt_url = url.replace('apkpure.com/', 'apkpure.com/vn/')
-            r = session.get(alt_url, headers=HEADERS, timeout=15)
-        r.raise_for_status()
-        return BeautifulSoup(r.text, 'html.parser')
-    except requests.RequestException:
-        return None
+    tries = int(os.environ.get('VESTOOL_TRIES', '3'))
+    backoff = float(os.environ.get('VESTOOL_BACKOFF', '1.5'))
+    err = None
+    for i in range(tries):
+        try:
+            r = session.get(url, headers=HEADERS, timeout=20)
+            if r.status_code == 403 and 'apkpure.com' in url:
+                alt_url = url.replace('apkpure.com/', 'apkpure.com/vn/')
+                r = session.get(alt_url, headers=HEADERS, timeout=20)
+            if os.environ.get('VESTOOL_DEBUG') == '1':
+                print(f'[DEBUG] Fetched URL={url} status={r.status_code} length={len(r.text)}')
+                print(r.text[:2000])
+            r.raise_for_status()
+            return BeautifulSoup(r.text, 'html.parser')
+        except requests.RequestException as e:
+            err = e
+            time.sleep(backoff * (i + 1))
+    print(f'[ERROR] _get_soup failed url={url} err={err}')
+    return None
 
 def _apkpure_list(limit=10):
     base = 'https://apkpure.com'
@@ -160,3 +172,6 @@ def fetch_trending(limit=10, source='apkpure'):
             'apk_url': apk_url
         })
     return out
+
+def get_apps(limit=10, source='apkpure'):
+    return fetch_trending(limit=limit, source=source)

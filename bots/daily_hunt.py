@@ -1,10 +1,17 @@
 import os
 import json
-from bot_crawler import fetch_trending
-from telegram_storage import download_and_upload, send_text
-from supabase_store import save_items
+from bot_crawler import fetch_trending, get_apps
+from telegram_storage import download_and_upload, send_text, check_secrets
+from supabase_store import save_items, check_connection
 
 def main():
+    print('Env check:')
+    print(f' TELEGRAM_BOT_TOKEN present: {bool(os.environ.get("TELEGRAM_BOT_TOKEN"))}')
+    print(f' TELEGRAM_CHANNEL_ID present: {bool(os.environ.get("TELEGRAM_CHANNEL_ID"))}')
+    print(f' SUPABASE_URL present: {bool(os.environ.get("SUPABASE_URL"))}')
+    print(f' SUPABASE_KEY present: {bool(os.environ.get("SUPABASE_KEY"))}')
+    check_secrets()
+    check_connection()
     items = fetch_trending(limit=10, source='apkpure')
     alt = fetch_trending(limit=10, source='apkcombo')
     print(f'APKPure lấy được: {len(items)} app')

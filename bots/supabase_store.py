@@ -1,13 +1,18 @@
 import os
 from datetime import datetime
 from supabase import create_client
+from supabase.lib.client_options import ClientOptions
 
 def get_client():
     url = os.environ.get('SUPABASE_URL')
     key = os.environ.get('SUPABASE_KEY')
     if not url or not key:
         return None
-    return create_client(url, key)
+    try:
+        return create_client(url, key, options=ClientOptions())
+    except Exception as e:
+        print(f'Supabase client init error: {e}')
+        return None
 
 def save_items(items):
     if not items:
@@ -29,4 +34,21 @@ def save_items(items):
                 'date': datetime.utcnow().isoformat()
             })
     if data:
-        return client.table('apps').upsert(data).select('*').execute()
+        try:
+            return client.table('apps').upsert(data).select('*').execute()
+        except Exception as e:
+            print(f'Supabase upsert error: {e}')
+            return None
+
+def check_connection():
+    client = get_client()
+    if not client:
+        print('Supabase: missing URL or KEY')
+        return False
+    try:
+        client.table('apps').select('*').limit(1).execute()
+        print('Supabase: connection OK')
+        return True
+    except Exception as e:
+        print(f'Supabase: connection error {e}')
+        return False

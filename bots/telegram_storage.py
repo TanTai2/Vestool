@@ -43,3 +43,14 @@ def send_text(message):
         'text': message
     }, timeout=60)
     return resp.ok
+
+def check_secrets():
+    ok = True
+    if not os.environ.get('TELEGRAM_BOT_TOKEN'):
+        print('Secrets: TELEGRAM_BOT_TOKEN missing')
+        ok = False
+    if not os.environ.get('TELEGRAM_CHANNEL_ID'):
+        print('Secrets: TELEGRAM_CHANNEL_ID missing')
+        ok = False
+    print(f'Secrets: Telegram token present={bool(os.environ.get("TELEGRAM_BOT_TOKEN"))}, channel present={bool(os.environ.get("TELEGRAM_CHANNEL_ID"))}')
+    return ok
