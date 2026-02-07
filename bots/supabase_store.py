@@ -36,10 +36,26 @@ def save_items(items):
             })
     if data:
         try:
-            return client.table('apps').upsert(data).execute()
+            # Nếu trùng app_id, thực hiện UPDATE thay vì báo lỗi duplicate
+            return client.table('apps').upsert(data, on_conflict='app_id').execute()
         except Exception as e:
             print(f'Supabase upsert error: {e}')
-            if 'PGRST205' in str(e) or 'Could not find the table' in str(e):
+            msg = str(e)
+            if ('duplicate key' in msg.lower()) or ('23505' in msg) or ('apps_app_id_key' in msg):
+                try:
+                    for row in data:
+                        client.table('apps').update({
+                            'title': row['title'],
+                            'icon': row['icon'],
+                            'description': row['description'],
+                            'apk_url': row['apk_url'],
+                            'telegram_link': row['telegram_link'],
+                            'date': row['date'],
+                        }).eq('app_id', row['app_id']).execute()
+                    print('Supabase: duplicate handled by UPDATE')
+                except Exception as e2:
+                    print(f'Supabase manual update error: {e2}')
+            if 'PGRST205' in msg or 'Could not find the table' in msg:
                 print('Gợi ý: Tạo bảng apps trong Supabase theo schema bots/schema.sql')
             return None
 

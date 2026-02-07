@@ -20,6 +20,10 @@ def main():
     ids_raw = os.environ.get('APP_IDS', '')
     ids = [x.strip() for x in ids_raw.split(',') if x.strip()]
     print(f'App IDs trước khi cào: {ids}')
+    if not ids:
+        default_ids = ['com.facebook.katana','com.instagram.android','com.ss.android.ugc.trill','com.whatsapp','org.telegram.messenger']
+        os.environ['APP_IDS'] = ','.join(default_ids)
+        print(f'APP_IDS rỗng, dùng mặc định: {default_ids}')
     print('>>> Cào từ Google Play (nguồn chính)...')
     items = fetch_trending(limit=10, source='gplay')
     print(f'Nhận từ GPlay: {len(items)} item')

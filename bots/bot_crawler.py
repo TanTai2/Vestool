@@ -14,9 +14,9 @@ except Exception:
     collections = None
     categories = None
 
-# Bộ mặt nạ đầy đủ để APKPure tin đây là người dùng thật
+# Bộ mặt nạ đầy đủ (giả lập Chrome trên Windows) để giảm 403
 HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.85 Safari/537.36',
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
     'Accept-Language': 'vi-VN,vi;q=0.9,en-US;q=0.8,en;q=0.7',
     'Accept-Encoding': 'gzip, deflate, br',
@@ -27,14 +27,23 @@ HEADERS = {
     'Sec-Fetch-Site': 'none',
     'Sec-Fetch-User': '?1',
     'Cache-Control': 'max-age=0',
+    'sec-ch-ua': '"Chromium";v="121", "Not(A:Brand";v="24", "Google Chrome";v="121"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'Referer': 'https://www.google.com/'
 }
 
 def _abs(base, href):
     return urllib.parse.urljoin(base, href)
 
 def _get_soup(url):
-    # Tạo một phiên làm việc để giữ cookie, giúp vượt qua 403
-    session = requests.Session()
+    # Tạo phiên cloudscraper nếu có, fallback về requests.Session
+    session = None
+    try:
+        import cloudscraper
+        session = cloudscraper.create_scraper(browser={'browser': 'chrome', 'platform': 'windows', 'mobile': False})
+    except Exception:
+        session = requests.Session()
     try:
         session.headers.update(HEADERS)
     except Exception:
@@ -44,10 +53,15 @@ def _get_soup(url):
     err = None
     for i in range(tries):
         try:
-            r = session.get(url, headers=HEADERS, timeout=20)
+            r = session.get(url, headers=HEADERS, timeout=30)
             if r.status_code == 403 and 'apkpure.com' in url:
                 alt_url = url.replace('apkpure.com/', 'apkpure.com/vn/')
-                r = session.get(alt_url, headers=HEADERS, timeout=20)
+                r = session.get(alt_url, headers=HEADERS, timeout=30)
+            if r.status_code == 403 and 'apkcombo.com' in url:
+                # thử lại với referer khác để giảm chặn
+                h2 = dict(HEADERS)
+                h2['Referer'] = 'https://apkcombo.com/'
+                r = session.get(url, headers=h2, timeout=30)
             if os.environ.get('VESTOOL_DEBUG') == '1':
                 print(f'[DEBUG] Fetched URL={url} status={r.status_code} length={len(r.text)}')
                 print(r.text[:2000])

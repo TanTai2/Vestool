@@ -27,6 +27,13 @@ from models.package import Package
 import logging
 import appstore
 import migrations
+import sys
+from models import PROJECT_ROOT
+sys.path.insert(0, PROJECT_ROOT)
+try:
+    from vestool_apk.vestool_apk_core import tim_kiem_app_ngoai
+except Exception:
+    tim_kiem_app_ngoai = None
 
 logging.basicConfig(level=logging.WARNING)
 
@@ -131,6 +138,19 @@ def get_packages():
     packs = packagestore.list_all()
     return jsonify(packs)
 
+@app.route("/api/search_apps", methods=['GET'])
+def search_apps():
+    q = (request.args.get('q') or '').strip()
+    limit = int(request.args.get('limit') or '12')
+    if not q:
+        return jsonify([])
+    items = []
+    if tim_kiem_app_ngoai:
+        try:
+            items = tim_kiem_app_ngoai(q, limit=limit)
+        except Exception:
+            items = []
+    return jsonify(items)
 
 @socketio.on('message')
 def handle_message(message):

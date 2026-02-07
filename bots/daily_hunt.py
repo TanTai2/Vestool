@@ -19,6 +19,10 @@ def main():
     ids_raw = os.environ.get('APP_IDS', '')
     ids = [x.strip() for x in ids_raw.split(',') if x.strip()]
     print(f'App IDs trước khi cào: {ids}')
+    if not ids:
+        default_ids = ['com.facebook.katana','com.instagram.android','com.ss.android.ugc.trill','com.whatsapp','org.telegram.messenger']
+        os.environ['APP_IDS'] = ','.join(default_ids)
+        print(f'APP_IDS rỗng, dùng mặc định: {default_ids}')
     items = fetch_trending(limit=20, source='gplay')
     alt = fetch_trending(limit=20, source='apkpure')
     print(f'GPlay lấy được: {len(items)} app')
@@ -35,6 +39,15 @@ def main():
         except Exception:
             mapping = {}
     for i in items:
+        # Bổ sung mô tả/icon từ Google Play cho chắc chắn
+        if gp_app:
+            try:
+                info = gp_app(i['app_id'], lang='vi', country='vn')
+                i['title'] = info.get('title') or i.get('title') or i['app_id']
+                i['icon'] = info.get('icon') or i.get('icon') or ''
+                i['description'] = info.get('description') or i.get('description') or ''
+            except Exception as e:
+                print(f'GPlay enrich error {i.get(\"app_id\")}: {e}')
         link = None
         apk_url = i.get('apk_url')
         if not apk_url:
