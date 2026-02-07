@@ -22,21 +22,25 @@ def save_items(items):
         return
     data = []
     for it in items:
-        if it.get('app_id') and it.get('title'):
+        app_id = (it.get('app_id') or '').strip()
+        title = (it.get('title') or '').strip()
+        if app_id and title:
             data.append({
-                'app_id': it['app_id'],
-                'title': it['title'],
-                'icon': it.get('icon', ''),
-                'description': it.get('description', ''),
-                'apk_url': it.get('apk_url', ''),
-                'telegram_link': it.get('telegram_link', ''),
+                'app_id': app_id,
+                'title': title,
+                'icon': it.get('icon') or '',
+                'description': it.get('description') or '',
+                'apk_url': it.get('apk_url') or '',
+                'telegram_link': it.get('telegram_link') or '',
                 'date': datetime.utcnow().isoformat()
             })
     if data:
         try:
-            return client.table('apps').upsert(data).select('*').execute()
+            return client.table('apps').upsert(data).execute()
         except Exception as e:
             print(f'Supabase upsert error: {e}')
+            if 'PGRST205' in str(e) or 'Could not find the table' in str(e):
+                print('Gợi ý: Tạo bảng apps trong Supabase theo schema bots/schema.sql')
             return None
 
 def check_connection():

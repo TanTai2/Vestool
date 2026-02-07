@@ -154,6 +154,32 @@ def _apkcombo_search_get_detail(title):
     a = soup.select_one('a[href^="/vi/"]')
     return _abs(base, a.get('href')) if a and a.get('href') else None
 
+def _uptodown_search_get_detail(app_id=None, title=None):
+    base = 'https://en.uptodown.com'
+    q = urllib.parse.quote((app_id or title or '').strip())
+    if not q:
+        return None
+    url = f'{base}/android/search?q={q}'
+    soup = _get_soup(url)
+    if not soup:
+        return None
+    a = soup.select_one('a[href*="/android"]')
+    return _abs(base, a.get('href')) if a and a.get('href') else None
+
+def _uptodown_direct(detail_url):
+    try:
+        soup = _get_soup(detail_url)
+        if not soup:
+            return None
+        a = soup.select_one('a[href*="/android/download"]')
+        if not a:
+            return None
+        return _abs(detail_url, a.get('href'))
+    except Exception as e:
+        print(f'Crawler _uptodown_direct error: {e}')
+        print(traceback.format_exc())
+        return None
+
 def _gplay_list(limit=10):
     items = []
     ids_raw = os.environ.get('APP_IDS', '')
@@ -174,10 +200,13 @@ def _gplay_list(limit=10):
         try:
             results = gp_search('Facebook', lang='vi', country='vn')
             for r in results[:limit]:
+                app_id = r.get('appId')
+                if not app_id:
+                    continue
                 items.append({
-                    'title': r.get('title') or r.get('appId') or '',
+                    'title': r.get('title') or app_id,
                     'icon': r.get('icon') or '',
-                    'detail': r.get('appId') or ''
+                    'detail': app_id
                 })
         except Exception as e:
             print(f'GPlay search error: {e}')
@@ -218,6 +247,14 @@ def fetch_trending(limit=10, source='gplay'):
                     det = _apkcombo_search_get_detail(it['title'])
                     if det:
                         apk_url = _apkcombo_direct(det)
+        else:
+            det = _uptodown_search_get_detail(app_id=it['detail'], title=it['title'])
+            if det:
+                apk_url = _uptodown_direct(det)
+            if not apk_url:
+                det2 = _apkcombo_search_get_detail(it['title'])
+                if det2:
+                    apk_url = _apkcombo_direct(det2)
         print(f'app_detail: {it["detail"]}')
         out.append({
             'app_id': it['detail'],
