@@ -2,7 +2,10 @@ import os
 import requests
 
 def download_file(url, out_path):
-    r = requests.get(url, stream=True, timeout=300)
+    r = requests.get(url, stream=True, timeout=300, allow_redirects=True)
+    if r.status_code == 404:
+        print(f'Download 404: {url}')
+        return False
     r.raise_for_status()
     with open(out_path, 'wb') as f:
         for chunk in r.iter_content(8192):
@@ -30,7 +33,9 @@ def download_and_upload(apk_url, tmp_dir='tmp'):
     os.makedirs(tmp_dir, exist_ok=True)
     name = os.path.basename(apk_url.split('?')[0]) or 'app.apk'
     path = os.path.join(tmp_dir, name)
-    download_file(apk_url, path)
+    got = download_file(apk_url, path)
+    if not got:
+        return None
     return upload_apk(path)
 
 def send_text(message):

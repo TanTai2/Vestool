@@ -163,8 +163,20 @@ def _uptodown_search_get_detail(app_id=None, title=None):
     soup = _get_soup(url)
     if not soup:
         return None
-    a = soup.select_one('a[href*="/android"]')
-    return _abs(base, a.get('href')) if a and a.get('href') else None
+    candidates = soup.select('a[href*="/android"]')
+    target = None
+    tnorm = (title or '').lower().strip()
+    for a in candidates:
+        href = a.get('href') or ''
+        text = (a.text or '').lower().strip()
+        if '/android/download' in href:
+            continue
+        if tnorm and tnorm in text:
+            target = a
+            break
+    if not target and candidates:
+        target = candidates[0]
+    return _abs(base, target.get('href')) if target and target.get('href') else None
 
 def _uptodown_direct(detail_url):
     try:
@@ -174,7 +186,15 @@ def _uptodown_direct(detail_url):
         a = soup.select_one('a[href*="/android/download"]')
         if not a:
             return None
-        return _abs(detail_url, a.get('href'))
+        link = _abs(detail_url, a.get('href'))
+        try:
+            resp = requests.get(link, timeout=15, allow_redirects=True)
+            if resp.status_code == 404:
+                print(f'Uptodown 404: {link}')
+                return None
+        except Exception:
+            pass
+        return link
     except Exception as e:
         print(f'Crawler _uptodown_direct error: {e}')
         print(traceback.format_exc())

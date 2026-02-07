@@ -4,6 +4,7 @@ create table if not exists apps (
   title text,
   icon text,
   description text,
+  apk_url text,
   telegram_link text,
   date timestamptz,
   unique (app_id, date)
