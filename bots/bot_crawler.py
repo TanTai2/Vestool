@@ -10,6 +10,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 logger = logging.getLogger(__name__)
 
+print('BOT DANG CHAY...')
+
 try:
     from google_play_scraper import app as gp_app, search as gp_search, list as gp_list, collections, categories
 except Exception:
