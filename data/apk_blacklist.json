@@ -1,0 +1,518 @@
+{
+  "com.facebook.stella": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:14:00"
+  },
+  "com.facebook.adsmanager": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:19:37"
+  },
+  "com.baitu.qingshu": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:14:06"
+  },
+  "com.nglreactnative": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:19:39"
+  },
+  "com.canva.editor": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:19:42"
+  },
+  "com.snapchat.android": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:14:29"
+  },
+  "com.discord": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:20:00"
+  },
+  "com.reddit.frontpage": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:20:03"
+  },
+  "jp.naver.line.android": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:20:05"
+  },
+  "sg.bigo.live": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:14:41"
+  },
+  "com.xingin.xhs": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:20:07"
+  },
+  "com.bd.nproject": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:20:10"
+  },
+  "com.substack.app": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:20:12"
+  },
+  "com.wejoy.weplay": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:20:15"
+  },
+  "org.thoughtcrime.securesms": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:20:20"
+  },
+  "com.viber.voip": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:20:24"
+  },
+  "com.imo.android.imoim": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:20:28"
+  },
+  "com.imo.android.imoimhd": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:20:32"
+  },
+  "network.loki.messenger": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:20:34"
+  },
+  "com.aratai.chat": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:20:38"
+  },
+  "com.plexapp.android": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:15:37"
+  },
+  "com.gogolive": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:21:41"
+  },
+  "com.wheat.mango": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:22:50"
+  },
+  "com.videoplayer.arcplayer": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:22:24"
+  },
+  "sg.bigo.live.lite": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:22:27"
+  },
+  "com.peeglelive": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:15:55"
+  },
+  "com.sgiggle.production": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:21:06"
+  },
+  "com.transsion.magicshow": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:22:10"
+  },
+  "com.hbapp.app": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:16:04"
+  },
+  "com.holalive.ui": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:16:07"
+  },
+  "com.glive.niki": {
+    "count": 3,
+    "last_fail": "2026-02-09 08:22:02"
+  },
+  "com.sec.android.app.music": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:22:54"
+  },
+  "com.zing.mp3": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:22:57"
+  },
+  "com.miui.player": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:23:00"
+  },
+  "com.afmobi.boomplayer": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:23:04"
+  },
+  "notion.id": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:23:33"
+  },
+  "cc.forestapp": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:23:36"
+  },
+  "com.riesapp": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:23:39"
+  },
+  "com.megogo.application": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:22:07"
+  },
+  "com.playit.videoplayer": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:22:33"
+  },
+  "com.intsig.camscanner": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:23:46"
+  },
+  "com.huya.nimo": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:22:45"
+  },
+  "com.monday.monday": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:23:54"
+  },
+  "com.palmmob.word.excel.sheets": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:24:41"
+  },
+  "com.tapoffice": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:24:51"
+  },
+  "com.collabora.libreoffice": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:24:55"
+  },
+  "com.mi.android.globalFileexplorer": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:25:19"
+  },
+  "com.iudesk.android.photo.editor": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:26:48"
+  },
+  "photo.editor.photoeditor.photoeditorpro": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:26:51"
+  },
+  "com.adobe.psmobile": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:26:55"
+  },
+  "com.adobe.lrmobile": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:27:53"
+  },
+  "com.alibaba.aliexpresshd": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:32:28"
+  },
+  "vsin.t16_funny_photo": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:28:28"
+  },
+  "com.camerasideas.trimmer": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:28:40"
+  },
+  "com.kvadgroup.photostudio": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:28:46"
+  },
+  "com.vsco.cam": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:28:58"
+  },
+  "com.commsource.beautyplus": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:29:03"
+  },
+  "com.shopee.vn": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:32:31"
+  },
+  "photo.editor.photoeditor.filtersforpictures": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:29:19"
+  },
+  "com.einnovation.temu": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:32:35"
+  },
+  "com.meitu.meiyancamera": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:29:40"
+  },
+  "com.zzkko": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:32:38"
+  },
+  "com.cyberlink.youperfect": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:29:44"
+  },
+  "com.nexstreaming.app.kinemasterfree": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:29:57"
+  },
+  "com.ebay.mobile": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:32:41"
+  },
+  "com.flipkart.android": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:32:44"
+  },
+  "com.meesho.supply": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:32:47"
+  },
+  "com.lazada.android": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:32:50"
+  },
+  "com.meitu.wink": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:30:35"
+  },
+  "com.alibaba.intl.android.apps.poseidon": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:32:53"
+  },
+  "com.cyberlink.actiondirector": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:30:38"
+  },
+  "com.chase.sig.android": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:32:55"
+  },
+  "com.quvideo.xiaoying": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:30:51"
+  },
+  "com.grppl.android.shell.halifax": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:32:59"
+  },
+  "co.uk.getmondo": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:33:02"
+  },
+  "vn.com.techcombank.bb.app": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:33:05"
+  },
+  "com.nu.production": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:33:08"
+  },
+  "glitchvideoeditor.videoeffects.glitchvideoeffect": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:31:10"
+  },
+  "com.kotak811mobilebankingapp.instantsavingsupiscanandpayrecharge": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:33:11"
+  },
+  "com.picpay": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:33:14"
+  },
+  "za.co.fnb.connect.itt": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:33:17"
+  },
+  "com.kontigo.lat": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:33:20"
+  },
+  "com.grppl.android.shell.CMBlloydsTSB73": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:33:23"
+  },
+  "de.number26.android": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:33:26"
+  },
+  "com.canarabank.mobility": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:33:30"
+  },
+  "com.google.android.GoogleCamera": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:32:05"
+  },
+  "com.photo.android.camera": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:32:08"
+  },
+  "com.itau": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:33:33"
+  },
+  "br.com.intermedium": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:33:36"
+  },
+  "de.fiduciagad.banking.vr": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:33:39"
+  },
+  "team.opay.pay": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:33:55"
+  },
+  "br.com.bb.android": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:33:57"
+  },
+  "com.uba.vericash": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:34:05"
+  },
+  "com.vnpay.bidv": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:34:08"
+  },
+  "uk.co.hsbc.hsbcukmobilebanking": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:34:11"
+  },
+  "com.bbva.bbvacontigo": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:34:14"
+  },
+  "id.co.bri.brimo": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:34:17"
+  },
+  "com.paypal.android.p2pmobile": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:34:29"
+  },
+  "com.ta.strike.ops": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:34:23"
+  },
+  "com.ubisoft.rainbowsixmobile.r6.fps.pvp.shooter": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:35:30"
+  },
+  "com.actgames.bbrr.sgp": {
+    "count": 2,
+    "last_fail": "2026-02-09 08:35:28"
+  },
+  "com.studiowildcard.arkuse": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:35:46"
+  },
+  "com.pikpok.dr2.play": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:35:52"
+  },
+  "com.os.airforce": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:36:19"
+  },
+  "com.playdigious.sor4": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:37:35"
+  },
+  "com.theguligames.landsofadventure": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:38:14"
+  },
+  "com.MelsoftGames.FamilyIslandFarm": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:38:43"
+  },
+  "games.dali.adventure.reborn": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:39:54"
+  },
+  "com.imangi.templerun2": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:39:58"
+  },
+  "com.chillingo.robberybobfree.android.row": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:40:11"
+  },
+  "com.king.candycrushsaga": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:41:11"
+  },
+  "com.inspiredsquare.jupiter": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:42:46"
+  },
+  "com.outfit7.mytalkingtom2": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:45:25"
+  },
+  "com.gamovation.chessclubpilot": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:45:46"
+  },
+  "com.yalla.yallagames": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:45:55"
+  },
+  "com.superking.parchisi.star": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:45:59"
+  },
+  "com.king.candycrush4": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:46:24"
+  },
+  "com.king.candycrushjellysaga": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:46:42"
+  },
+  "com.teenpatti.hd.gold": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:46:54"
+  },
+  "com.expedia.bookings": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:47:49"
+  },
+  "com.tripadvisor.tripadvisor": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:47:52"
+  },
+  "com.trivago": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:48:44"
+  },
+  "com.booking": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:48:48"
+  },
+  "com.airbnb.android": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:49:35"
+  },
+  "com.priceline.android.negotiator": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:50:28"
+  },
+  "com.hcom.android": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:50:59"
+  },
+  "com.hostelworld.app": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:51:02"
+  },
+  "com.pintraveler.pintraveler": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:51:32"
+  },
+  "com.nhn.android.nmap": {
+    "count": 1,
+    "last_fail": "2026-02-09 08:53:45"
+  }
+}

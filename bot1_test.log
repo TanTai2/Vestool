@@ -1,0 +1,62 @@
+============================================================
+  VesTool Bot 1 — Continuous App Crawler
+============================================================
+  TELEGRAM_BOT_TOKEN: ✅
+  TELEGRAM_CHANNEL_ID: ✅
+  TELEGRAM_INFO_CHANNEL_ID: ✅
+  Cycle interval: 15s (0 min)
+  App delay: 1s
+JSON Store: /root/VesTool/data ✅
+  Apps: 46
+
+🔄 === CYCLE 1 === 2026-02-09 03:01:34
+
+============================================================
+[Cycle #1] DB: 46 apps (43 với icon)
+============================================================
+Uptodown: no detail found for app_id=com.facebook.adsmanager title=Quảng cáo trên Facebook
+Uptodown direct: no download button found
+Uptodown direct: no download button found
+Uptodown direct: no download button found
+  📂 Nguồn: trending
+  📊 Tìm thấy: 30 | Đã cache: 25 | Cần xử lý: 5
+✅ Lưu 1 app (46 tổng)
+✅ Lưu 1 app (46 tổng)
+  ✅ Using cached APK: /api/apk/com_mico_0dbe0f7c.apk
+✅ Lưu 1 app (46 tổng)
+✅ Lưu 1 app (46 tổng)
+✅ Lưu 1 app (46 tổng)
+
+📊 Chu kỳ xong: 5 app, 1 upload OK, 0 app mới
+
+💤 Chờ 15s (0 phút) trước chu kỳ tiếp...
+
+🔄 === CYCLE 2 === 2026-02-09 03:02:37
+
+============================================================
+[Cycle #2] DB: 46 apps (43 với icon)
+============================================================
+Uptodown: no detail found for app_id=com.facebook.adsmanager title=Quảng cáo trên Facebook
+Uptodown direct: no download button found
+Uptodown direct: no download button found
+Uptodown direct: no download button found
+  📂 Nguồn: trending
+  📊 Tìm thấy: 30 | Đã cache: 25 | Cần xử lý: 5
+✅ Lưu 1 app (46 tổng)
+✅ Lưu 1 app (46 tổng)
+  ✅ Using cached APK: /api/apk/com_mico_0dbe0f7c.apk
+✅ Lưu 1 app (46 tổng)
+✅ Lưu 1 app (46 tổng)
+✅ Lưu 1 app (46 tổng)
+
+📊 Chu kỳ xong: 5 app, 1 upload OK, 0 app mới
+
+💤 Chờ 15s (0 phút) trước chu kỳ tiếp...
+
+🔄 === CYCLE 3 === 2026-02-09 03:03:38
+
+============================================================
+[Cycle #3] DB: 46 apps (43 với icon)
+============================================================
+Uptodown: no detail found for app_id=com.facebook.adsmanager title=Quảng cáo trên Facebook
+Uptodown direct: no download button found

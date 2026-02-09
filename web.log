@@ -1,0 +1,41 @@
+nohup: ignoring input
+============================================================
+VesTool Combined Server
+============================================================
+Web UI: http://0.0.0.0:8005
+API:    http://0.0.0.0:8005/api/apps
+============================================================
+ * Serving Flask app 'web_server'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8005
+ * Running on http://103.129.126.235:8005
+Press CTRL+C to quit
+127.0.0.1 - - [09/Feb/2026 01:57:04] "GET /api/apps HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 01:57:05] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 01:57:06] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 01:57:06] "GET /static/css/main.0cedb676.chunk.css HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 01:57:06] "GET /static/js/main.e556d7d7.chunk.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 01:57:07] "GET /static/js/2.e66d5c51.chunk.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 01:57:07] "GET /api/apps HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 01:57:15] "GET /data/versions/com_facebook_pages_app.json HTTP/1.1" 404 -
+127.0.0.1 - - [09/Feb/2026 01:57:22] "GET /data/versions/com_facebook_work.json HTTP/1.1" 404 -
+127.0.0.1 - - [09/Feb/2026 01:57:39] "GET /api/apps HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 01:58:01] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [09/Feb/2026 01:58:02] "GET /static/css/main.0cedb676.chunk.css HTTP/1.1" 304 -
+127.0.0.1 - - [09/Feb/2026 01:58:02] "GET /static/js/2.e66d5c51.chunk.js HTTP/1.1" 304 -
+127.0.0.1 - - [09/Feb/2026 01:58:02] "GET /static/js/main.e556d7d7.chunk.js HTTP/1.1" 304 -
+127.0.0.1 - - [09/Feb/2026 01:58:02] "GET /favicon.ico HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 01:58:02] "GET /api/apps HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 01:58:05] "GET /data/versions/com_instagram_lite.json HTTP/1.1" 404 -
+127.0.0.1 - - [09/Feb/2026 01:58:21] "GET /data/versions/com_instagram_barcelona.json HTTP/1.1" 404 -
+127.0.0.1 - - [09/Feb/2026 02:00:41] "GET /api/versions/com.facebook.katana HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 02:00:44] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [09/Feb/2026 02:00:44] "GET /static/css/main.0cedb676.chunk.css HTTP/1.1" 304 -
+127.0.0.1 - - [09/Feb/2026 02:00:44] "GET /static/js/2.e66d5c51.chunk.js HTTP/1.1" 304 -
+127.0.0.1 - - [09/Feb/2026 02:00:44] "GET /static/js/main.e556d7d7.chunk.js HTTP/1.1" 304 -
+127.0.0.1 - - [09/Feb/2026 02:00:44] "GET /api/apps HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 02:00:46] "GET /data/versions/com_facebook_work.json HTTP/1.1" 404 -
+127.0.0.1 - - [09/Feb/2026 02:00:55] "GET /data/versions/org_telegram_messenger.json HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 02:01:32] "GET /api/apk/org_telegram_messenger_587958ff.apk HTTP/1.1" 200 -

@@ -8,3 +8,6 @@ eventlet
 gevent
 gevent-websocket
 peewee-migrate==1.1.6
+# Telegram streaming - tối ưu cho VPS 1GB RAM
+aiohttp>=3.8.0
+telethon>=1.28.0
