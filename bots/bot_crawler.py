@@ -105,7 +105,9 @@ def _apkpure_list(limit=10):
             title_tag = c.find('dt') or c.find('p') or a
             title = (title_tag.text or '').strip() if title_tag else 'Unknown App'
             img_tag = c.find('img')
-            img = (img_tag.get('data-src') or img_tag.get('src')) if img_tag else None
+            img = img_tag.get('data-src') or img_tag.get('src') if img_tag else None
+            if img and img.startswith('//'):
+                img = 'https:' + img
             detail = _abs(base, href)
             logger.debug(f'app_detail: {detail}')
             apps.append({'title': title, 'icon': img, 'detail': detail})

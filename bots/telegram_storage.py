@@ -1,6 +1,8 @@
 import os
 import time
 import hashlib
+import mimetypes
+import urllib.parse
 import requests
 from bs4 import BeautifulSoup
 
@@ -14,6 +16,8 @@ HEADERS = {
 TG_API_BASE = os.environ.get('TG_API_BASE', 'http://localhost:8081')
 
 # --------------- Helpers ---------------
+
+ICON_CACHE_DIR = os.path.join('/tmp', 'vestool_icons')
 
 def _get_fresh_uptodown_url(detail_url):
     """Visit Uptodown download page and get fresh APK download URL with session."""
@@ -34,6 +38,33 @@ def _get_fresh_uptodown_url(detail_url):
     except Exception:
         pass
     return None, None
+
+
+def _download_icon_file(icon_url):
+    """Fetch icon_url into a local temp file so Telegram can upload reliably."""
+    if not icon_url or not icon_url.startswith('http'):
+        return None
+    try:
+        os.makedirs(ICON_CACHE_DIR, exist_ok=True)
+        resp = requests.get(icon_url, headers=HEADERS, timeout=20)
+        if resp.status_code != 200:
+            return None
+        data = resp.content
+        if len(data) < 512 or len(data) > 5 * 1024 * 1024:
+            return None
+        ctype = resp.headers.get('Content-Type', '').split(';')[0].strip()
+        ext = mimetypes.guess_extension(ctype) if ctype else None
+        if not ext:
+            path_ext = os.path.splitext(urllib.parse.urlparse(icon_url).path)[1]
+            ext = path_ext if path_ext else '.jpg'
+        name = hashlib.md5(icon_url.encode()).hexdigest() + ext
+        path = os.path.join(ICON_CACHE_DIR, name)
+        with open(path, 'wb') as f:
+            f.write(data)
+        return path, (ctype or 'image/jpeg')
+    except Exception as e:
+        print(f'  Icon download failed: {e}')
+        return None
 
 
 def download_file(url, out_path, session=None):
@@ -167,14 +198,23 @@ def upload_apk_to_telegram(file_path, app_title='', app_id='', version='', chann
         token = os.environ.get('TELEGRAM_BOT_TOKEN')
         chat_id = channel_id or os.environ.get('TELEGRAM_CHANNEL_ID')
         if token and chat_id:
-            icon_resp = _tg_api('sendPhoto', token, data={
-                'chat_id': chat_id,
-                'photo': icon_url,
-                'caption': f'🖼️ {app_title}',
-                'parse_mode': 'HTML'
-            })
-            if icon_resp and icon_resp.ok:
-                reply_to = icon_resp.json().get('result', {}).get('message_id')
+            icon_data = _download_icon_file(icon_url)
+            if icon_data:
+                icon_path, mime_type = icon_data
+                with open(icon_path, 'rb') as f:
+                    icon_resp = _tg_api('sendPhoto', token,
+                        data={
+                            'chat_id': chat_id,
+                            'caption': f'🖼️ {app_title}',
+                            'parse_mode': 'HTML'
+                        },
+                        files={'photo': (os.path.basename(icon_path), f, mime_type)})
+                try:
+                    os.remove(icon_path)
+                except Exception:
+                    pass
+                if icon_resp and icon_resp.ok:
+                    reply_to = icon_resp.json().get('result', {}).get('message_id')
 
     link, msg_id = send_document(file_path, caption=caption, channel_id=channel_id, reply_to=reply_to)
     return link, size_mb
@@ -253,22 +293,30 @@ def send_app_info_to_channel2(app):
 
     # If icon exists, send as photo with caption
     if icon and icon.startswith('http'):
-        data = {
-            'chat_id': chat_id,
-            'photo': icon,
-            'caption': caption,
-            'parse_mode': 'HTML',
-        }
-        resp = _tg_api('sendPhoto', token, data=data)
-        if resp and resp.ok:
-            result = resp.json().get('result', {})
-            msg_id = result.get('message_id')
-            link = _tg_message_link(chat_id, msg_id)
-            print(f'  Channel 2 info posted: {link}')
-            return link, msg_id
-        else:
-            err = resp.text[:200] if resp else 'No response'
-            print(f'  Channel 2 photo failed: {err}, trying text only...')
+        icon_data = _download_icon_file(icon)
+        if icon_data:
+            icon_path, mime_type = icon_data
+            with open(icon_path, 'rb') as f:
+                resp = _tg_api('sendPhoto', token,
+                               data={
+                                   'chat_id': chat_id,
+                                   'caption': caption,
+                                   'parse_mode': 'HTML',
+                               },
+                               files={'photo': (os.path.basename(icon_path), f, mime_type)})
+            try:
+                os.remove(icon_path)
+            except Exception:
+                pass
+            if resp and resp.ok:
+                result = resp.json().get('result', {})
+                msg_id = result.get('message_id')
+                link = _tg_message_link(chat_id, msg_id)
+                print(f'  Channel 2 info posted: {link}')
+                return link, msg_id
+            else:
+                err = resp.text[:200] if resp else 'No response'
+                print(f'  Channel 2 photo failed: {err}, trying text only...')
 
     # Fallback: send as text message
     data = {

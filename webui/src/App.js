@@ -42,7 +42,7 @@ function getProxyDownloadUrl(telegramLink, appName) {
   return `/api/download?link=${encodeURIComponent(telegramLink)}&name=${encodeURIComponent(safeName)}`;
 }
 
-// Get the best download URL - prefer local files, then direct links, then proxy for Telegram
+// Get the best download URL - uses smart on-demand download API
 function getBestDownloadUrl(app) {
   const appName = app.title || app.app_id || 'app';
   
@@ -53,26 +53,22 @@ function getBestDownloadUrl(app) {
     return { url: localUrl, isDirect: true, sizeMb: app.apk_size_mb, isLocal: true };
   }
   
-  // Priority 2: apk_url if it's a direct download (not Telegram)
-  if (app.apk_url && !isTelegramLink(app.apk_url)) {
-    return { url: app.apk_url, isDirect: true, sizeMb: app.apk_size_mb };
-  }
-  
-  // Priority 3: telegram_link - use proxy for direct download through VPS
+  // Priority 2: Already has telegram_link - use proxy for direct download
   const { url: tgUrl, sizeMb } = parseDownloadInfo(app.telegram_link, app.apk_size_mb);
   if (tgUrl) {
-    // Use proxy URL to download directly without opening Telegram
     const proxyUrl = getProxyDownloadUrl(tgUrl, appName);
-    return { url: proxyUrl, isDirect: true, sizeMb, originalTgLink: tgUrl };
+    return { url: proxyUrl, isDirect: true, sizeMb, originalTgLink: tgUrl, isCached: true };
   }
   
-  // Priority 4: apk_url - if Telegram, use proxy
-  if (app.apk_url) {
-    if (isTelegramLink(app.apk_url)) {
-      const proxyUrl = getProxyDownloadUrl(app.apk_url, appName);
-      return { url: proxyUrl, isDirect: true, sizeMb: app.apk_size_mb, originalTgLink: app.apk_url };
-    }
-    return { url: app.apk_url, isDirect: true, sizeMb: app.apk_size_mb };
+  // Priority 3: Use smart on-demand API - downloads from Uptodown, caches to Telegram, streams
+  // This endpoint handles: checking cache -> downloading APK -> uploading to Telegram -> streaming
+  if (app.app_id) {
+    return { 
+      url: `/api/get-apk/${encodeURIComponent(app.app_id)}`,
+      isDirect: true, 
+      sizeMb: app.apk_size_mb,
+      isOnDemand: true // Flag to show loading state
+    };
   }
   
   return { url: null, isDirect: false, sizeMb: app.apk_size_mb };
@@ -378,6 +374,9 @@ const TITLE_KEYWORDS = {
   shopping: ['shop', 'mua sắm', 'seller'],
 };
 
+const INITIAL_VISIBLE_COUNT = 200;
+const LOAD_MORE_STEP = 200;
+
 function categorizeApp(app) {
   const appId = (app.app_id || '').toLowerCase();
   const title = (app.title || '').toLowerCase();
@@ -479,7 +478,7 @@ function getCategoryIcon(emoji) {
   return icons[emoji] || <span className="text-lg">{emoji}</span>;
 }
 
-function CategorySection({ title, emoji, apps, onSelectApp, showRank = false, bgGradient = 'from-gray-900 to-gray-800' }) {
+function CategorySection({ title, emoji, apps, onSelectApp, showRank = false, onViewAll, bgGradient = 'from-gray-900 to-gray-800' }) {
   if (apps.length === 0) return null;
   
   return (
@@ -491,12 +490,18 @@ function CategorySection({ title, emoji, apps, onSelectApp, showRank = false, bg
           <span>{title}</span>
           <span className="text-xs font-normal text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{apps.length}</span>
         </h2>
-        <button className="text-sm text-red-500 hover:text-red-600 font-medium transition flex items-center gap-1">
-          Xem tất cả
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
+        {onViewAll && (
+          <button
+            type="button"
+            onClick={onViewAll}
+            className="text-sm text-red-500 hover:text-red-600 font-medium transition flex items-center gap-1"
+          >
+            Xem tất cả
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        )}
       </div>
       
       {/* Horizontal Scroll Container */}
@@ -1072,7 +1077,11 @@ function AppDetailPage({ app, onBack, relatedApps, onSelectApp }) {
 
 /* ==================== INDEX PAGE ==================== */
 function IndexPage({ apps, loading, error, searchQuery, onSearch, onRefresh, onSelectApp, activeCategory, onCategoryChange }) {
-  const [showAllApps, setShowAllApps] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
+  
+  useEffect(() => {
+    setVisibleCount(INITIAL_VISIBLE_COUNT);
+  }, [apps, searchQuery]);
   
   const filtered = apps.filter((app) => {
     if (!searchQuery.trim()) return true;
@@ -1102,7 +1111,11 @@ function IndexPage({ apps, loading, error, searchQuery, onSearch, onRefresh, onS
   const shoppingApps = filtered.filter(app => categorizeApp(app) === 'shopping');
   
   // Display limit for all apps
-  const displayedApps = showAllApps ? sortedApps : sortedApps.slice(0, 10);
+  const totalApps = sortedApps.length;
+  const displayedApps = sortedApps.slice(0, visibleCount);
+  const hasMoreApps = visibleCount < totalApps;
+  const remainingApps = Math.max(totalApps - displayedApps.length, 0);
+  const nextBatchSize = Math.min(LOAD_MORE_STEP, remainingApps);
 
   // If searching, show filtered results directly
   if (searchQuery.trim()) {
@@ -1302,6 +1315,7 @@ function IndexPage({ apps, loading, error, searchQuery, onSearch, onRefresh, onS
                 emoji="🎮"
                 apps={gameApps}
                 onSelectApp={onSelectApp}
+                onViewAll={() => onCategoryChange('game')}
               />
               
               {/* Social Media Section */}
@@ -1310,6 +1324,7 @@ function IndexPage({ apps, loading, error, searchQuery, onSearch, onRefresh, onS
                 emoji="💬"
                 apps={socialApps}
                 onSelectApp={onSelectApp}
+                onViewAll={() => onCategoryChange('social')}
               />
               
               {/* Tools Section */}
@@ -1318,6 +1333,7 @@ function IndexPage({ apps, loading, error, searchQuery, onSearch, onRefresh, onS
                 emoji="🛠️"
                 apps={toolApps}
                 onSelectApp={onSelectApp}
+                onViewAll={() => onCategoryChange('tool')}
               />
               
               {/* Video & Movie Section */}
@@ -1326,6 +1342,7 @@ function IndexPage({ apps, loading, error, searchQuery, onSearch, onRefresh, onS
                 emoji="🎬"
                 apps={videoApps}
                 onSelectApp={onSelectApp}
+                onViewAll={() => onCategoryChange('video')}
               />
               
               {/* Music Section */}
@@ -1334,6 +1351,7 @@ function IndexPage({ apps, loading, error, searchQuery, onSearch, onRefresh, onS
                 emoji="🎵"
                 apps={musicApps}
                 onSelectApp={onSelectApp}
+                onViewAll={() => onCategoryChange('music')}
               />
               
               {/* Education Section */}
@@ -1342,6 +1360,7 @@ function IndexPage({ apps, loading, error, searchQuery, onSearch, onRefresh, onS
                 emoji="📚"
                 apps={educationApps}
                 onSelectApp={onSelectApp}
+                onViewAll={() => onCategoryChange('education')}
               />
               
               {/* Shopping Section */}
@@ -1350,7 +1369,53 @@ function IndexPage({ apps, loading, error, searchQuery, onSearch, onRefresh, onS
                 emoji="🛒"
                 apps={shoppingApps}
                 onSelectApp={onSelectApp}
+                onViewAll={() => onCategoryChange('shopping')}
               />
+
+              {/* All Apps Section */}
+              <section className="mb-12">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    <span>Tất cả ứng dụng</span>
+                    <span className="text-xs font-normal text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{totalApps}</span>
+                  </h2>
+                  {hasMoreApps && (
+                    <button
+                      type="button"
+                      onClick={() => setVisibleCount(totalApps)}
+                      className="text-sm text-red-500 hover:text-red-600 font-medium transition"
+                    >
+                      Hiển thị {totalApps} ứng dụng
+                    </button>
+                  )}
+                </div>
+                {displayedApps.length === 0 ? (
+                  <div className="text-center text-gray-500 py-12 bg-white rounded-2xl shadow-sm">
+                    <div className="text-5xl mb-2">📭</div>
+                    <p className="text-sm">Không có ứng dụng nào để hiển thị</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {displayedApps.map((app, idx) => (
+                      <AppCard key={app.app_id || idx} app={app} onClick={onSelectApp} />
+                    ))}
+                  </div>
+                )}
+                {hasMoreApps && nextBatchSize > 0 && (
+                  <div className="text-center mt-6">
+                    <button
+                      type="button"
+                      onClick={() => setVisibleCount((prev) => Math.min(prev + LOAD_MORE_STEP, totalApps))}
+                      className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-red-500 to-red-600 text-white text-sm font-semibold shadow-lg hover:shadow-xl transition"
+                    >
+                      Tải thêm {nextBatchSize} ứng dụng
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
+              </section>
             </>
           )}
         </div>
