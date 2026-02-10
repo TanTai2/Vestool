@@ -2,3 +2,8 @@ google-play-scraper
 requests
 beautifulsoup4
 cloudscraper
+aiohttp
+aiofiles
+boto3
+telethon
+lxml

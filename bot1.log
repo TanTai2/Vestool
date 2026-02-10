@@ -1782,3 +1782,165 @@ Uptodown direct: no download button found
 ✅ Lưu 1 app (747 tổng)
   🔎 Resolving APK URL for net.osmand...
   ✅ Found APK URL: https://dw.uptodown.com/dwn/kn77pJPnu0yBQRhcIS67e_uCHRFzkWpk7I3zFcMu6J8PVRfYS2hy...
+2026-02-10 15:19:19,576 [INFO] bot1: Giới hạn: 3 apps
+2026-02-10 15:19:19,585 [INFO] bot1: === VesTool Crawler bắt đầu: 3 apps ===
+2026-02-10 15:19:19,587 [INFO] bot1: [1/3] YouTube ReVanced (Phim Nhạc & Streaming)
+2026-02-10 15:19:41,440 [WARNING] apk_sources: No source found for: YouTube ReVanced
+2026-02-10 15:19:41,443 [WARNING] bot1:   -> Không tìm thấy APK từ nguồn nào
+2026-02-10 15:19:41,446 [INFO] bot1: [2/3] Spotify Premium Mod (Phim Nhạc & Streaming)
+2026-02-10 15:20:06,572 [WARNING] apk_sources: No source found for: Spotify Premium Mod
+2026-02-10 15:20:06,573 [WARNING] bot1:   -> Không tìm thấy APK từ nguồn nào
+2026-02-10 15:20:06,573 [INFO] bot1: [3/3] TikTok Mod (Phim Nhạc & Streaming)
+2026-02-10 15:20:33,111 [WARNING] apk_sources: No source found for: TikTok Mod
+2026-02-10 15:20:33,111 [WARNING] bot1:   -> Không tìm thấy APK từ nguồn nào
+2026-02-10 15:20:33,113 [INFO] bot1: ============================================================
+2026-02-10 15:20:33,114 [INFO] bot1: === TỔNG KẾT ===
+2026-02-10 15:20:33,114 [INFO] bot1:   Tổng:       3
+2026-02-10 15:20:33,114 [INFO] bot1:   Thành công: 0
+2026-02-10 15:20:33,114 [INFO] bot1:   Thất bại:   3
+2026-02-10 15:20:33,114 [INFO] bot1:   Bỏ qua:     0
+2026-02-10 15:20:33,114 [INFO] bot1:   Lỗi chi tiết:
+2026-02-10 15:20:33,115 [INFO] bot1:     - YouTube ReVanced: no_source_found
+2026-02-10 15:20:33,115 [INFO] bot1:     - Spotify Premium Mod: no_source_found
+2026-02-10 15:20:33,115 [INFO] bot1:     - TikTok Mod: no_source_found
+2026-02-10 15:20:33,115 [INFO] bot1: ============================================================
+2026-02-10 15:20:33,115 [INFO] bot1: Hoàn thành trong 74s (1.2 phút)
+2026-02-10 15:54:30,738 [INFO] bot1: Giới hạn: 5 apps
+2026-02-10 15:54:30,741 [INFO] bot1: === VesTool Crawler bắt đầu: 5 apps ===
+2026-02-10 15:54:30,741 [INFO] bot1: [1/5] YouTube ReVanced (Phim Nhạc & Streaming)
+2026-02-10 15:54:31,681 [INFO] apk_sources: [uptodown] Found: YouTube ReVanced v21.06.251 (slug=youtube)
+2026-02-10 15:54:32,897 [INFO] bot1:   -> Tìm thấy: uptodown v21.06.251
+2026-02-10 15:54:32,898 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:54:32,898 [INFO] bot1: [2/5] Spotify Premium Mod (Phim Nhạc & Streaming)
+2026-02-10 15:54:33,544 [INFO] apk_sources: [uptodown] Found: Spotify Premium Mod v9.1.22.1624 (slug=spotify)
+2026-02-10 15:54:34,745 [INFO] bot1:   -> Tìm thấy: uptodown v9.1.22.1624
+2026-02-10 15:54:34,745 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:54:34,746 [INFO] bot1: [3/5] TikTok Mod (Phim Nhạc & Streaming)
+2026-02-10 15:54:35,611 [INFO] apk_sources: [uptodown] Found: TikTok Mod v43.8.3 (slug=tiktok)
+2026-02-10 15:54:36,712 [INFO] bot1:   -> Tìm thấy: uptodown v43.8.3
+2026-02-10 15:54:36,713 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:54:36,713 [INFO] bot1: [4/5] Netflix Mod (Phim Nhạc & Streaming)
+2026-02-10 15:54:38,305 [INFO] apk_sources: [uptodown] Found: Netflix Mod v9.52.0 build 9 64013 (slug=netflix)
+2026-02-10 15:54:39,404 [INFO] bot1:   -> Tìm thấy: uptodown v9.52.0 build 9 64013
+2026-02-10 15:54:39,405 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:54:39,405 [INFO] bot1: [5/5] SoundCloud Mod (Phim Nhạc & Streaming)
+2026-02-10 15:54:41,177 [INFO] apk_sources: [uptodown] Found: SoundCloud Mod v2026.01.27-release (slug=soundcloud)
+2026-02-10 15:54:42,339 [INFO] bot1:   -> Tìm thấy: uptodown v2026.01.27-release
+2026-02-10 15:54:42,340 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:54:42,344 [INFO] bot1: ============================================================
+2026-02-10 15:54:42,346 [INFO] bot1: === TỔNG KẾT ===
+2026-02-10 15:54:42,346 [INFO] bot1:   Tổng:       5
+2026-02-10 15:54:42,346 [INFO] bot1:   Thành công: 5
+2026-02-10 15:54:42,347 [INFO] bot1:   Thất bại:   0
+2026-02-10 15:54:42,347 [INFO] bot1:   Bỏ qua:     0
+2026-02-10 15:54:42,347 [INFO] bot1: ============================================================
+2026-02-10 15:54:42,347 [INFO] bot1: Hoàn thành trong 12s (0.2 phút)
+2026-02-10 15:55:00,242 [INFO] bot1: Tìm app 'Spotify': 3 kết quả
+2026-02-10 15:55:00,244 [INFO] bot1: Giới hạn: 1 apps
+2026-02-10 15:55:00,245 [INFO] bot1: === VesTool Crawler bắt đầu: 1 apps ===
+2026-02-10 15:55:00,246 [INFO] bot1: [1/1] Spotify Premium Mod (Phim Nhạc & Streaming)
+2026-02-10 15:55:00,815 [INFO] apk_sources: [uptodown] Found: Spotify Premium Mod v9.1.22.1624 (slug=spotify)
+2026-02-10 15:55:01,983 [INFO] bot1:   -> Tìm thấy: uptodown v9.1.22.1624
+2026-02-10 15:55:02,852 [INFO] apk_sources: [uptodown] Downloading 11.7MB
+2026-02-10 15:55:04,563 [INFO] apk_sources: [sources] Downloaded: /root/VesTool/tmp/spotify-premium-mod.apk (11.7MB, md5=f281d09c)
+2026-02-10 15:55:04,564 [INFO] bot1:   -> Đã tải: 11.7MB
+2026-02-10 15:55:06,005 [INFO] metadata_fetcher: Downloaded icon: spotify-premium-mod
+2026-02-10 15:55:06,005 [INFO] metadata_fetcher: Metadata fetched: Spotify Premium Mod (desc=GP, icon=ok)
+2026-02-10 15:55:06,005 [INFO] bot1:   -> Metadata: icon=có, desc=3709 chars
+2026-02-10 15:55:08,012 [INFO] bot1: ============================================================
+2026-02-10 15:55:08,013 [INFO] bot1: === TỔNG KẾT ===
+2026-02-10 15:55:08,014 [INFO] bot1:   Tổng:       1
+2026-02-10 15:55:08,014 [INFO] bot1:   Thành công: 1
+2026-02-10 15:55:08,014 [INFO] bot1:   Thất bại:   0
+2026-02-10 15:55:08,015 [INFO] bot1:   Bỏ qua:     0
+2026-02-10 15:55:08,015 [INFO] bot1: ============================================================
+2026-02-10 15:55:08,015 [INFO] bot1: Hoàn thành trong 8s (0.1 phút)
+2026-02-10 15:55:24,277 [INFO] bot1: Giới hạn: 20 apps
+2026-02-10 15:55:24,278 [INFO] bot1: === VesTool Crawler bắt đầu: 20 apps ===
+2026-02-10 15:55:24,279 [INFO] bot1: [1/20] YouTube ReVanced (Phim Nhạc & Streaming)
+2026-02-10 15:55:24,926 [INFO] apk_sources: [uptodown] Found: YouTube ReVanced v21.06.251 (slug=youtube)
+2026-02-10 15:55:26,063 [INFO] bot1:   -> Tìm thấy: uptodown v21.06.251
+2026-02-10 15:55:26,063 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:55:26,064 [INFO] bot1: [2/20] Spotify Premium Mod (Phim Nhạc & Streaming)
+2026-02-10 15:55:26,064 [INFO] bot1:   -> Đã có, skip.
+2026-02-10 15:55:26,064 [INFO] bot1: [3/20] TikTok Mod (Phim Nhạc & Streaming)
+2026-02-10 15:55:26,565 [INFO] apk_sources: [uptodown] Found: TikTok Mod v43.8.3 (slug=tiktok)
+2026-02-10 15:55:27,652 [INFO] bot1:   -> Tìm thấy: uptodown v43.8.3
+2026-02-10 15:55:27,653 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:55:27,653 [INFO] bot1: [4/20] Netflix Mod (Phim Nhạc & Streaming)
+2026-02-10 15:55:28,187 [INFO] apk_sources: [uptodown] Found: Netflix Mod v9.52.0 build 9 64013 (slug=netflix)
+2026-02-10 15:55:29,397 [INFO] bot1:   -> Tìm thấy: uptodown v9.52.0 build 9 64013
+2026-02-10 15:55:29,398 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:55:29,399 [INFO] bot1: [5/20] SoundCloud Mod (Phim Nhạc & Streaming)
+2026-02-10 15:55:29,963 [INFO] apk_sources: [uptodown] Found: SoundCloud Mod v2026.01.27-release (slug=soundcloud)
+2026-02-10 15:55:31,057 [INFO] bot1:   -> Tìm thấy: uptodown v2026.01.27-release
+2026-02-10 15:55:31,057 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:55:31,059 [INFO] bot1: [6/20] Deezer Premium Mod (Phim Nhạc & Streaming)
+2026-02-10 15:55:33,427 [INFO] apk_sources: [uptodown] Found: Deezer Premium Mod v9.0.6.2 (slug=deezer)
+2026-02-10 15:55:34,608 [INFO] bot1:   -> Tìm thấy: uptodown v9.0.6.2
+2026-02-10 15:55:34,609 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:55:34,609 [INFO] bot1: [7/20] Tidal HiFi Mod (Phim Nhạc & Streaming)
+2026-02-10 15:55:38,104 [INFO] apk_sources: [sources] Only Google Play metadata for 'Tidal HiFi Mod' (no APK)
+2026-02-10 15:55:38,105 [INFO] bot1:   -> Tìm thấy: google_play vVaries with device
+2026-02-10 15:55:38,105 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:55:38,106 [INFO] bot1: [8/20] Apple Music Mod (Phim Nhạc & Streaming)
+2026-02-10 15:55:39,406 [INFO] apk_sources: [uptodown] Found: Apple Music Mod v5.1.0 (slug=apple-music)
+2026-02-10 15:55:40,574 [INFO] bot1:   -> Tìm thấy: uptodown v5.1.0
+2026-02-10 15:55:40,575 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:55:40,576 [INFO] bot1: [9/20] Joox VIP Mod (Phim Nhạc & Streaming)
+2026-02-10 15:55:42,492 [INFO] apk_sources: [sources] Only Google Play metadata for 'Joox VIP Mod' (no APK)
+2026-02-10 15:55:42,492 [INFO] bot1:   -> Tìm thấy: google_play vVaries with device
+2026-02-10 15:55:42,493 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:55:42,493 [INFO] bot1: [10/20] Zing MP3 Premium Mod (Phim Nhạc & Streaming)
+2026-02-10 15:55:44,177 [INFO] apk_sources: [uptodown] Found: Zing MP3 Premium Mod v25.11 (slug=zing-mp3)
+2026-02-10 15:55:45,271 [INFO] bot1:   -> Tìm thấy: uptodown v25.11
+2026-02-10 15:55:45,271 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:55:45,273 [INFO] bot1: [11/20] Nhaccuatui VIP Mod (Phim Nhạc & Streaming)
+2026-02-10 15:55:46,897 [INFO] apk_sources: [uptodown] Found: Nhaccuatui VIP Mod v8.4.18 (slug=nhaccuatui)
+2026-02-10 15:55:47,981 [INFO] bot1:   -> Tìm thấy: uptodown v8.4.18
+2026-02-10 15:55:47,981 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:55:47,982 [INFO] bot1: [12/20] Pandora Premium Mod (Phim Nhạc & Streaming)
+2026-02-10 15:55:50,235 [INFO] apk_sources: [sources] Only Google Play metadata for 'Pandora Premium Mod' (no APK)
+2026-02-10 15:55:50,235 [INFO] bot1:   -> Tìm thấy: google_play vVaries with device
+2026-02-10 15:55:50,236 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:55:50,236 [INFO] bot1: [13/20] Audible Premium Mod (Phim Nhạc & Streaming)
+2026-02-10 15:55:51,747 [INFO] apk_sources: [uptodown] Found: Audible Premium Mod vAudible_2090250210 (slug=audible)
+2026-02-10 15:55:52,862 [INFO] bot1:   -> Tìm thấy: uptodown vAudible_2090250210
+2026-02-10 15:55:52,863 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:55:52,864 [INFO] bot1: [14/20] FilmPlus Mod (Phim Nhạc & Streaming)
+2026-02-10 15:55:54,607 [WARNING] apk_sources: [sources] No source found for: FilmPlus Mod
+2026-02-10 15:55:54,607 [WARNING] bot1:   -> Không tìm thấy APK từ nguồn nào
+2026-02-10 15:55:54,608 [INFO] bot1: [15/20] Cinema HD Mod (Phim Nhạc & Streaming)
+2026-02-10 15:55:56,518 [INFO] apk_sources: [uptodown] Found: Cinema HD Mod v3.0.3 (slug=cinema)
+2026-02-10 15:55:57,865 [INFO] bot1:   -> Tìm thấy: uptodown v3.0.3
+2026-02-10 15:55:57,866 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:55:57,868 [INFO] bot1: [16/20] BeeTV Mod (Phim Nhạc & Streaming)
+2026-02-10 15:56:00,603 [INFO] apk_sources: [sources] Only Google Play metadata for 'BeeTV Mod' (no APK)
+2026-02-10 15:56:00,604 [INFO] bot1:   -> Tìm thấy: google_play vVaries with device
+2026-02-10 15:56:00,604 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:56:00,605 [INFO] bot1: [17/20] Stremio Mod (Phim Nhạc & Streaming)
+2026-02-10 15:56:02,413 [WARNING] apk_sources: [sources] No source found for: Stremio Mod
+2026-02-10 15:56:02,413 [WARNING] bot1:   -> Không tìm thấy APK từ nguồn nào
+2026-02-10 15:56:02,414 [INFO] bot1: [18/20] Kodi Mod (Phim Nhạc & Streaming)
+2026-02-10 15:56:04,082 [WARNING] apk_sources: [sources] No source found for: Kodi Mod
+2026-02-10 15:56:04,083 [WARNING] bot1:   -> Không tìm thấy APK từ nguồn nào
+2026-02-10 15:56:04,083 [INFO] bot1: [19/20] Live NetTV Mod (Phim Nhạc & Streaming)
+2026-02-10 15:56:06,352 [INFO] apk_sources: [uptodown] Found: Live NetTV Mod v1.4.8 (slug=live)
+2026-02-10 15:56:07,658 [INFO] bot1:   -> Tìm thấy: uptodown v1.4.8
+2026-02-10 15:56:07,659 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:56:07,660 [INFO] bot1: [20/20] HBO Max Mod (Phim Nhạc & Streaming)
+2026-02-10 15:56:09,618 [INFO] apk_sources: [uptodown] Found: HBO Max Mod v2.3.1 (slug=hbo)
+2026-02-10 15:56:11,461 [INFO] bot1:   -> Tìm thấy: uptodown v2.3.1
+2026-02-10 15:56:11,461 [INFO] bot1:   -> [DRY-RUN] Bỏ qua tải & upload
+2026-02-10 15:56:11,471 [INFO] bot1: ============================================================
+2026-02-10 15:56:11,472 [INFO] bot1: === TỔNG KẾT ===
+2026-02-10 15:56:11,472 [INFO] bot1:   Tổng:       20
+2026-02-10 15:56:11,473 [INFO] bot1:   Thành công: 16
+2026-02-10 15:56:11,473 [INFO] bot1:   Thất bại:   3
+2026-02-10 15:56:11,473 [INFO] bot1:   Bỏ qua:     1
+2026-02-10 15:56:11,473 [INFO] bot1:   Lỗi chi tiết:
+2026-02-10 15:56:11,474 [INFO] bot1:     - FilmPlus Mod: no_source_found
+2026-02-10 15:56:11,474 [INFO] bot1:     - Stremio Mod: no_source_found
+2026-02-10 15:56:11,474 [INFO] bot1:     - Kodi Mod: no_source_found
+2026-02-10 15:56:11,475 [INFO] bot1: ============================================================
+2026-02-10 15:56:11,475 [INFO] bot1: Hoàn thành trong 47s (0.8 phút)
