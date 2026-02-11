@@ -36,11 +36,11 @@ TELEGRAM = {
 R2 = {
     # Account credentials
     'account_id': '4ab86eee85a2f3d10bdd3568f290aab3',
-    'access_key_id': 'f17824a216e648707ee7b23d7fda3fe7',
-    'secret_access_key': 'ea781be6b6716b0dc0862f487f553ca79439685d4b329b6b70ac19c6cb67a926',
+    'access_key_id': 'bdf0356faa33aa419a31e664fe164ad8',
+    'secret_access_key': '350c2ffeb770f2d622f57bf696ac6fe6b031289d0bafdf8b3a9014d11a7911fc',
     
     # Bucket settings
-    'bucket_name': os.environ.get('R2_BUCKET', 'vestool-apks'),
+    'bucket_name': os.environ.get('R2_BUCKET', 'ves2208'),
     'endpoint_url': f"https://4ab86eee85a2f3d10bdd3568f290aab3.r2.cloudflarestorage.com",
     
     # Public URL (configure in R2 dashboard)

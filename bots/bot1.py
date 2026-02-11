@@ -232,9 +232,13 @@ class VesToolCrawler:
         # Kiểm tra đã crawl chưa
         existing = find_in_db(self.db, slug)
         if existing and existing.get("status") == "done":
-            logger.info(f"  -> Đã có, skip.")
-            self.stats["skipped"] += 1
-            return
+            # Check if app exists on R2 before skipping
+            if self.storage and not self.storage.check_app_exists(slug):
+                logger.info(f"  -> App {slug} không tồn tại trên R2, xử lý lại.")
+            else:
+                logger.info(f"  -> Đã có, skip.")
+                self.stats["skipped"] += 1
+                return
 
         try:
             # ---- Bước 1: Tìm APK từ các nguồn ----
@@ -294,33 +298,38 @@ class VesToolCrawler:
             # ---- Bước 4: Upload ----
             upload_result = {}
             if not self.args.skip_upload and self.storage:
-                try:
-                    app_info_for_upload = {
-                        "name": name,
-                        "slug": slug,
-                        "version": version,
-                        "package_name": package,
-                        "category": category,
-                        "description": description_vi,
-                    }
-
-                    # Upload APK
-                    upload_result = await self.storage.upload_apk(
-                        apk_path, app_info_for_upload
-                    )
-                    logger.info(f"  -> Upload APK: OK")
-
-                    # Upload icon
-                    if icon_path and os.path.exists(icon_path):
-                        icon_result = await self.storage.upload_icon(
-                            icon_path, app_info_for_upload
+                retry_attempts = 3
+                for attempt in range(retry_attempts):
+                    try:
+                        # Upload APK
+                        app_info_for_upload = {
+                            "name": name,
+                            "slug": slug,
+                            "version": version,
+                            "package_name": package,
+                            "category": category,
+                            "description": description_vi,
+                        }
+                        upload_result = await self.storage.upload_apk(
+                            apk_path, app_info_for_upload
                         )
-                        upload_result["icon"] = icon_result
-                        logger.info(f"  -> Upload icon: OK")
+                        logger.info(f"  -> Upload APK: OK")
 
-                except Exception as e:
-                    logger.error(f"  -> Upload error: {e}")
-                    upload_result["error"] = str(e)
+                        # Upload icon
+                        if icon_path and os.path.exists(icon_path):
+                            icon_result = await self.storage.upload_icon(
+                                icon_path, app_info_for_upload
+                            )
+                            upload_result["icon"] = icon_result
+                            logger.info(f"  -> Upload icon: OK")
+                        break  # Exit retry loop if successful
+                    except Exception as e:
+                        logger.error(f"  -> Upload attempt {attempt + 1} failed: {e}")
+                        if attempt == retry_attempts - 1:
+                            upload_result["error"] = str(e)
+                            logger.error("  -> All upload attempts failed.")
+                            break
+                        await asyncio.sleep(2 ** attempt)  # Exponential backoff
 
             # ---- Bước 5: Ghi kết quả ----
             self._record_success(app, search_result, meta, upload_result)

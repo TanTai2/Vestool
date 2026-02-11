@@ -138,6 +138,16 @@ class R2Uploader:
             logger.error(f"R2 list error: {e}")
             return []
 
+    def object_exists(self, slug: str) -> bool:
+        """Kiểm tra xem object có tồn tại trên R2 không."""
+        try:
+            self.client.head_object(Bucket=self.bucket, Key=slug)
+            return True
+        except self.client.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == '404':
+                return False
+            raise
+
 
 class TelegramUploader:
     """Upload APK lên Telegram Channel (lưu trữ không giới hạn dung lượng)"""
@@ -306,3 +316,11 @@ class StorageManager:
             result["r2_url"] = r2_url
 
         return result
+
+    def check_app_exists(self, slug: str) -> bool:
+        """Kiểm tra xem app có tồn tại trên R2 không."""
+        try:
+            return self.r2.object_exists(slug)
+        except Exception as e:
+            logger.error(f"Check app exists error: {e}")
+            return False
